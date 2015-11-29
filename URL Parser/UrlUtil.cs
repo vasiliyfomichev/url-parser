@@ -114,7 +114,7 @@ namespace URL_Parser
 
             filePath = EnsureAbsoluteUrlFormat(filePath, context);
 
-            var regex = Settings.Default.ImageRegexPatternforCssFiles;
+            var regex = Settings.Default.ImageRegexPatternForCss;
             const RegexOptions options = ((RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline) | RegexOptions.IgnoreCase);
             var content = GetUrlContent(filePath);
             if (string.IsNullOrWhiteSpace(content)) return null;
@@ -141,7 +141,7 @@ namespace URL_Parser
 
             filePath = EnsureAbsoluteUrlFormat(filePath, context);
 
-            var regex = Settings.Default.ImageRegexPatternForJsFiles;
+            var regex = Settings.Default.ImageRegexPatternForJs;
             const RegexOptions options = ((RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline) | RegexOptions.IgnoreCase);
             var content = GetUrlContent(filePath);
             if (string.IsNullOrWhiteSpace(content)) return null;
@@ -154,21 +154,22 @@ namespace URL_Parser
                 || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
                 || v.EndsWith("png", StringComparison.OrdinalIgnoreCase)
                 || v.EndsWith("ico", StringComparison.OrdinalIgnoreCase))
+
+                //TODO:account for images with querystrings
                 .Select(r => new Image
                 {
                     Src = r,
-                    Alt = "Styling image"
+                    Alt = "Script image"
                 });
         }
 
-        public static IEnumerable<Image> GetImagesFromText(string text)
+        public static IEnumerable<Image> GetImagesFromText(string text, string imageRegex)
         {
             if (string.IsNullOrWhiteSpace(text)) return null;
-            var regex = Settings.Default.ImageRegexPatternforCssFiles;
             const RegexOptions options = ((RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline) | RegexOptions.IgnoreCase);
             if (string.IsNullOrWhiteSpace(text)) return null;
 
-            var matches = Regex.Matches(text, regex, options)
+            var matches = Regex.Matches(text, imageRegex, options)
                        .Cast<Match>().Select(m => m.Groups["bgpath"]);
             return matches.Select(m => m.Value)
                 .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
@@ -179,7 +180,7 @@ namespace URL_Parser
                 .Select(r => new Image
                 {
                     Src = r,
-                    Alt = "Styling image"
+                    Alt = "Inline image"
                 });
         }
 

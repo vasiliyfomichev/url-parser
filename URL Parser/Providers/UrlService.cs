@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Ajax.Utilities;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
+using URL_Parser.Properties;
 
 namespace URL_Parser.Providers
 {
@@ -69,7 +70,8 @@ namespace URL_Parser.Providers
             foreach (var inlineStyle in inlineStyles)
             {
                 var styleContent = inlineStyle.InnerText;
-                var imageReferences = UrlUtil.GetImagesFromText(styleContent);
+                var regex = Settings.Default.ImageRegexPatternForCss;
+                var imageReferences = UrlUtil.GetImagesFromText(styleContent, regex);
                 if (imageReferences == null || !imageReferences.Any())
                     continue;
                 imageUrls.AddRange(imageReferences.Select(i => new Image
@@ -93,7 +95,21 @@ namespace URL_Parser.Providers
                 }));
             }
 
-            
+            // Inline JS
+            var inlineScripts = document.DocumentNode.SelectNodes("//script");
+            foreach (var inlineScript in inlineScripts)
+            {
+                var styleContent = inlineScript.InnerText;
+                var regex = Settings.Default.ImageRegexPatternForJs;
+                var imageReferences = UrlUtil.GetImagesFromText(styleContent, regex);
+                if (imageReferences == null || !imageReferences.Any())
+                    continue;
+                imageUrls.AddRange(imageReferences.Select(i => new Image
+                {
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
+                    Alt = i.Alt
+                }));
+            }
 
                 //TODO:parse css and js references.
                 return imageUrls;

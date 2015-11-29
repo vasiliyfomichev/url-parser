@@ -35,18 +35,18 @@ namespace URL_Parser.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("url\\([\'\"\"](?<bgpath>.*)[\'\\\"\"]\\)")]
-        public string ImageRegexPatternforCssFiles {
+        public string ImageRegexPatternForCss {
             get {
-                return ((string)(this["ImageRegexPatternforCssFiles"]));
+                return ((string)(this["ImageRegexPatternForCss"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ImageRegexPatternForJsFiles {
+        [global::System.Configuration.DefaultSettingValueAttribute("[\'\"\"](?<bgpath>.*)[\'\\\"\"]")]
+        public string ImageRegexPatternForJs {
             get {
-                return ((string)(this["ImageRegexPatternForJsFiles"]));
+                return ((string)(this["ImageRegexPatternForJs"]));
             }
         }
     }
