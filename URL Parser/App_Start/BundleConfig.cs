@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿#region
+
 using System.Web.Optimization;
+
+#endregion
 
 namespace URL_Parser.App_Start
 {

@@ -49,5 +49,119 @@ namespace URL_Parser.Properties {
                 return ((string)(this["ImageRegexPatternForJs"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsi=\"http://www.w3." +
+            "org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <s" +
+            "tring>a</string>\r\n  <string>about</string>\r\n  <string>above</string>\r\n  <string>" +
+            "across</string>\r\n  <string>after</string>\r\n  <string>afterwards</string>\r\n  <str" +
+            "ing>again</string>\r\n  <string>against</string>\r\n  <string>all</string>\r\n  <strin" +
+            "g>almost</string>\r\n  <string>alone</string>\r\n  <string>along</string>\r\n  <string" +
+            ">already</string>\r\n  <string>also</string>\r\n  <string>although</string>\r\n  <stri" +
+            "ng>always</string>\r\n  <string>am</string>\r\n  <string>among</string>\r\n  <string>a" +
+            "mongst</string>\r\n  <string>amoungst</string>\r\n  <string>amount</string>\r\n  <stri" +
+            "ng>an</string>\r\n  <string>and</string>\r\n  <string>another</string>\r\n  <string>an" +
+            "y</string>\r\n  <string>anyhow</string>\r\n  <string>anyone</string>\r\n  <string>anyt" +
+            "hing</string>\r\n  <string>anyway</string>\r\n  <string>anywhere</string>\r\n  <string" +
+            ">are</string>\r\n  <string>around</string>\r\n  <string>as</string>\r\n  <string>at</s" +
+            "tring>\r\n  <string>back</string>\r\n  <string>be</string>\r\n  <string>became</string" +
+            ">\r\n  <string>because</string>\r\n  <string>become</string>\r\n  <string>becomes</str" +
+            "ing>\r\n  <string>becoming</string>\r\n  <string>been</string>\r\n  <string>before</st" +
+            "ring>\r\n  <string>beforehand</string>\r\n  <string>behind</string>\r\n  <string>being" +
+            "</string>\r\n  <string>below</string>\r\n  <string>beside</string>\r\n  <string>beside" +
+            "s</string>\r\n  <string>between</string>\r\n  <string>beyond</string>\r\n  <string>bil" +
+            "l</string>\r\n  <string>both</string>\r\n  <string>bottom</string>\r\n  <string>but</s" +
+            "tring>\r\n  <string>by</string>\r\n  <string>call</string>\r\n  <string>can</string>\r\n" +
+            "  <string>cannot</string>\r\n  <string>cant</string>\r\n  <string>co</string>\r\n  <st" +
+            "ring>computer</string>\r\n  <string>con</string>\r\n  <string>could</string>\r\n  <str" +
+            "ing>couldnt</string>\r\n  <string>cry</string>\r\n  <string>de</string>\r\n  <string>d" +
+            "escribe</string>\r\n  <string>detail</string>\r\n  <string>do</string>\r\n  <string>do" +
+            "ne</string>\r\n  <string>down</string>\r\n  <string>due</string>\r\n  <string>during</" +
+            "string>\r\n  <string>each</string>\r\n  <string>eg</string>\r\n  <string>eight</string" +
+            ">\r\n  <string>either</string>\r\n  <string>eleven</string>\r\n  <string>else</string>" +
+            "\r\n  <string>elsewhere</string>\r\n  <string>empty</string>\r\n  <string>enough</stri" +
+            "ng>\r\n  <string>etc</string>\r\n  <string>even</string>\r\n  <string>ever</string>\r\n " +
+            " <string>every</string>\r\n  <string>everyone</string>\r\n  <string>everything</stri" +
+            "ng>\r\n  <string>everywhere</string>\r\n  <string>except</string>\r\n  <string>few</st" +
+            "ring>\r\n  <string>fifteen</string>\r\n  <string>fify</string>\r\n  <string>fill</stri" +
+            "ng>\r\n  <string>find</string>\r\n  <string>fire</string>\r\n  <string>first</string>\r" +
+            "\n  <string>five</string>\r\n  <string>for</string>\r\n  <string>former</string>\r\n  <" +
+            "string>formerly</string>\r\n  <string>forty</string>\r\n  <string>found</string>\r\n  " +
+            "<string>four</string>\r\n  <string>from</string>\r\n  <string>front</string>\r\n  <str" +
+            "ing>full</string>\r\n  <string>further</string>\r\n  <string>get</string>\r\n  <string" +
+            ">give</string>\r\n  <string>go</string>\r\n  <string>had</string>\r\n  <string>has</st" +
+            "ring>\r\n  <string>hasnt</string>\r\n  <string>have</string>\r\n  <string>he</string>\r" +
+            "\n  <string>hence</string>\r\n  <string>her</string>\r\n  <string>here</string>\r\n  <s" +
+            "tring>hereafter</string>\r\n  <string>hereby</string>\r\n  <string>herein</string>\r\n" +
+            "  <string>hereupon</string>\r\n  <string>hers</string>\r\n  <string>herse\"</string>\r" +
+            "\n  <string>him</string>\r\n  <string>himse\"</string>\r\n  <string>his</string>\r\n  <s" +
+            "tring>how</string>\r\n  <string>however</string>\r\n  <string>hundred</string>\r\n  <s" +
+            "tring>i</string>\r\n  <string>ie</string>\r\n  <string>if</string>\r\n  <string>in</st" +
+            "ring>\r\n  <string>inc</string>\r\n  <string>indeed</string>\r\n  <string>interest</st" +
+            "ring>\r\n  <string>into</string>\r\n  <string>is</string>\r\n  <string>it</string>\r\n  " +
+            "<string>its</string>\r\n  <string>itse\"</string>\r\n  <string>keep</string>\r\n  <stri" +
+            "ng>last</string>\r\n  <string>latter</string>\r\n  <string>latterly</string>\r\n  <str" +
+            "ing>least</string>\r\n  <string>less</string>\r\n  <string>ltd</string>\r\n  <string>m" +
+            "ade</string>\r\n  <string>many</string>\r\n  <string>may</string>\r\n  <string>me</str" +
+            "ing>\r\n  <string>meanwhile</string>\r\n  <string>might</string>\r\n  <string>mill</st" +
+            "ring>\r\n  <string>mine</string>\r\n  <string>more</string>\r\n  <string>moreover</str" +
+            "ing>\r\n  <string>most</string>\r\n  <string>mostly</string>\r\n  <string>move</string" +
+            ">\r\n  <string>much</string>\r\n  <string>must</string>\r\n  <string>my</string>\r\n  <s" +
+            "tring>myse\"</string>\r\n  <string>name</string>\r\n  <string>namely</string>\r\n  <str" +
+            "ing>neither</string>\r\n  <string>never</string>\r\n  <string>nevertheless</string>\r" +
+            "\n  <string>next</string>\r\n  <string>nine</string>\r\n  <string>no</string>\r\n  <str" +
+            "ing>nobody</string>\r\n  <string>none</string>\r\n  <string>noone</string>\r\n  <strin" +
+            "g>nor</string>\r\n  <string>not</string>\r\n  <string>nothing</string>\r\n  <string>no" +
+            "w</string>\r\n  <string>nowhere</string>\r\n  <string>of</string>\r\n  <string>off</st" +
+            "ring>\r\n  <string>often</string>\r\n  <string>on</string>\r\n  <string>once</string>\r" +
+            "\n  <string>one</string>\r\n  <string>only</string>\r\n  <string>onto</string>\r\n  <st" +
+            "ring>or</string>\r\n  <string>other</string>\r\n  <string>others</string>\r\n  <string" +
+            ">otherwise</string>\r\n  <string>our</string>\r\n  <string>ours</string>\r\n  <string>" +
+            "ourselves</string>\r\n  <string>out</string>\r\n  <string>over</string>\r\n  <string>o" +
+            "wn</string>\r\n  <string>part</string>\r\n  <string>per</string>\r\n  <string>perhaps<" +
+            "/string>\r\n  <string>please</string>\r\n  <string>put</string>\r\n  <string>rather</s" +
+            "tring>\r\n  <string>re</string>\r\n  <string>same</string>\r\n  <string>see</string>\r\n" +
+            "  <string>seem</string>\r\n  <string>seemed</string>\r\n  <string>seeming</string>\r\n" +
+            "  <string>seems</string>\r\n  <string>serious</string>\r\n  <string>several</string>" +
+            "\r\n  <string>she</string>\r\n  <string>should</string>\r\n  <string>show</string>\r\n  " +
+            "<string>side</string>\r\n  <string>since</string>\r\n  <string>sincere</string>\r\n  <" +
+            "string>six</string>\r\n  <string>sixty</string>\r\n  <string>so</string>\r\n  <string>" +
+            "some</string>\r\n  <string>somehow</string>\r\n  <string>someone</string>\r\n  <string" +
+            ">something</string>\r\n  <string>sometime</string>\r\n  <string>sometimes</string>\r\n" +
+            "  <string>somewhere</string>\r\n  <string>still</string>\r\n  <string>such</string>\r" +
+            "\n  <string>system</string>\r\n  <string>take</string>\r\n  <string>ten</string>\r\n  <" +
+            "string>than</string>\r\n  <string>that</string>\r\n  <string>the</string>\r\n  <string" +
+            ">their</string>\r\n  <string>them</string>\r\n  <string>themselves</string>\r\n  <stri" +
+            "ng>then</string>\r\n  <string>thence</string>\r\n  <string>there</string>\r\n  <string" +
+            ">thereafter</string>\r\n  <string>thereby</string>\r\n  <string>therefore</string>\r\n" +
+            "  <string>therein</string>\r\n  <string>thereupon</string>\r\n  <string>these</strin" +
+            "g>\r\n  <string>they</string>\r\n  <string>thick</string>\r\n  <string>thin</string>\r\n" +
+            "  <string>third</string>\r\n  <string>this</string>\r\n  <string>those</string>\r\n  <" +
+            "string>though</string>\r\n  <string>three</string>\r\n  <string>through</string>\r\n  " +
+            "<string>throughout</string>\r\n  <string>thru</string>\r\n  <string>thus</string>\r\n " +
+            " <string>to</string>\r\n  <string>together</string>\r\n  <string>too</string>\r\n  <st" +
+            "ring>top</string>\r\n  <string>toward</string>\r\n  <string>towards</string>\r\n  <str" +
+            "ing>twelve</string>\r\n  <string>twenty</string>\r\n  <string>two</string>\r\n  <strin" +
+            "g>un</string>\r\n  <string>under</string>\r\n  <string>until</string>\r\n  <string>up<" +
+            "/string>\r\n  <string>upon</string>\r\n  <string>us</string>\r\n  <string>very</string" +
+            ">\r\n  <string>via</string>\r\n  <string>was</string>\r\n  <string>we</string>\r\n  <str" +
+            "ing>well</string>\r\n  <string>were</string>\r\n  <string>what</string>\r\n  <string>w" +
+            "hatever</string>\r\n  <string>when</string>\r\n  <string>whence</string>\r\n  <string>" +
+            "whenever</string>\r\n  <string>where</string>\r\n  <string>whereafter</string>\r\n  <s" +
+            "tring>whereas</string>\r\n  <string>whereby</string>\r\n  <string>wherein</string>\r\n" +
+            "  <string>whereupon</string>\r\n  <string>wherever</string>\r\n  <string>whether</st" +
+            "ring>\r\n  <string>which</string>\r\n  <string>while</string>\r\n  <string>whither</st" +
+            "ring>\r\n  <string>who</string>\r\n  <string>whoever</string>\r\n  <string>whole</stri" +
+            "ng>\r\n  <string>whom</string>\r\n  <string>whose</string>\r\n  <string>why</string>\r\n" +
+            "  <string>will</string>\r\n  <string>with</string>\r\n  <string>within</string>\r\n  <" +
+            "string>without</string>\r\n  <string>would</string>\r\n  <string>yet</string>\r\n  <st" +
+            "ring>you</string>\r\n  <string>your</string>\r\n  <string>yours</string>\r\n  <string>" +
+            "yourself</string>\r\n  <string>yourselves</string>\r\n</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection StopWords {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["StopWords"]));
+            }
+        }
     }
 }

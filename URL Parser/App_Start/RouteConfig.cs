@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿#region
+
 using System.Web.Mvc;
 using System.Web.Routing;
+
+#endregion
 
 namespace URL_Parser
 {

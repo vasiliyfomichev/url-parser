@@ -140,6 +140,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Image.cs" />
+    <Compile Include="Models\WordReportItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -148,7 +149,8 @@
     </Compile>
     <Compile Include="Contracts\IUrlService.cs" />
     <Compile Include="Providers\UrlService.cs" />
-    <Compile Include="UrlUtil.cs" />
+    <Compile Include="Utility\ImageUtil.cs" />
+    <Compile Include="Utility\UrlUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

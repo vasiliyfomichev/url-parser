@@ -1,6 +1,7 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -8,9 +9,10 @@ using System.Text.RegularExpressions;
 using System.Web;
 using HtmlAgilityPack;
 using URL_Parser.Models;
-using URL_Parser.Properties;
 
-namespace URL_Parser
+#endregion
+
+namespace URL_Parser.Utility
 {
     /// <summary>
     /// 
@@ -77,6 +79,34 @@ namespace URL_Parser
             return Uri.TryCreate(url, UriKind.Absolute, out result);
         }
 
+        public static bool UrlExists(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url)) return false;
+            url = EnsureAbsoluteUrlFormat(url, HttpContext.Current);
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = WebRequestMethods.Http.Head;
+            var response = (HttpWebResponse)request.GetResponse();
+            return response.StatusCode == HttpStatusCode.OK;
+        }
+
+        public static string GetUrlContent(string url)
+        {
+            if (string.IsNullOrWhiteSpace(url) && !UrlExists(url))
+                return null;
+            var webRequest = WebRequest.Create(url);
+
+            using (var response = webRequest.GetResponse())
+            using (var content = response.GetResponseStream())
+            {
+                if (content == null) return null;
+                using (var reader = new StreamReader(content))
+                {
+                    var strContent = reader.ReadToEnd();
+                    return strContent;
+                }
+            }
+        }
+
         public static IEnumerable<Image> GetMetaImageUrls(HtmlDocument document)
         {
             var head = document.DocumentNode.SelectSingleNode("//head");
@@ -94,97 +124,7 @@ namespace URL_Parser
                 .Where(i => !string.IsNullOrWhiteSpace(i.Src) && IsUri(i.Src) && IsImageUrl(i.Src));
             return urls;
         }
-
         
-
-        public static bool UrlExists(string url)
-        {
-            if (string.IsNullOrWhiteSpace(url)) return false;
-            url = EnsureAbsoluteUrlFormat(url, HttpContext.Current);
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = WebRequestMethods.Http.Head;
-            var response = (HttpWebResponse)request.GetResponse();
-            return response.StatusCode == HttpStatusCode.OK;
-        }
-
-
-        public static IEnumerable<Image> GetImagesFromCssFile(string filePath, HttpContext context)
-        {
-            if (string.IsNullOrWhiteSpace(filePath) || context == null) return null;
-
-            filePath = EnsureAbsoluteUrlFormat(filePath, context);
-
-            var regex = Settings.Default.ImageRegexPatternForCss;
-            const RegexOptions options = ((RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline) | RegexOptions.IgnoreCase);
-            var content = GetUrlContent(filePath);
-            if (string.IsNullOrWhiteSpace(content)) return null;
-
-            var matches = Regex.Matches(content, regex, options)
-                       .Cast<Match>().Select(m=>m.Groups["bgpath"]);
-            return matches.Select(m=>m.Value)
-                .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("png", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("ico", StringComparison.OrdinalIgnoreCase))
-                .Select(r=>new Image
-            {
-                Src = r,
-                Alt = "Styling image"
-            });
-        }
-
-        public static IEnumerable<Image> GetImagesFromScriptFile(string filePath, HttpContext context)
-        {
-
-            if (string.IsNullOrWhiteSpace(filePath) || context == null) return null;
-
-            filePath = EnsureAbsoluteUrlFormat(filePath, context);
-
-            var regex = Settings.Default.ImageRegexPatternForJs;
-            const RegexOptions options = ((RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline) | RegexOptions.IgnoreCase);
-            var content = GetUrlContent(filePath);
-            if (string.IsNullOrWhiteSpace(content)) return null;
-
-            var matches = Regex.Matches(content, regex, options)
-                       .Cast<Match>().Select(m => m.Groups["bgpath"]);
-            return matches.Select(m => m.Value)
-                .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("png", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("ico", StringComparison.OrdinalIgnoreCase))
-
-                //TODO:account for images with querystrings
-                .Select(r => new Image
-                {
-                    Src = r,
-                    Alt = "Script image"
-                });
-        }
-
-        public static IEnumerable<Image> GetImagesFromText(string text, string imageRegex)
-        {
-            if (string.IsNullOrWhiteSpace(text)) return null;
-            const RegexOptions options = ((RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline) | RegexOptions.IgnoreCase);
-            if (string.IsNullOrWhiteSpace(text)) return null;
-
-            var matches = Regex.Matches(text, imageRegex, options)
-                       .Cast<Match>().Select(m => m.Groups["bgpath"]);
-            return matches.Select(m => m.Value)
-                .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("png", StringComparison.OrdinalIgnoreCase)
-                || v.EndsWith("ico", StringComparison.OrdinalIgnoreCase))
-                .Select(r => new Image
-                {
-                    Src = r,
-                    Alt = "Inline image"
-                });
-        }
-
-
         public static IEnumerable<string> GetCssFilePaths(HtmlDocument document)
         {
             var rootNode = document.DocumentNode;
@@ -214,24 +154,6 @@ namespace URL_Parser
             var nodes = scriptNodes
                 .Select(n => n.GetAttributeValue("src", null));
             return nodes.Count(n => n != null) == 0 ? null : nodes.Where(n => n != null);
-        }
-
-        public static string GetUrlContent(string url)
-        {
-            if (string.IsNullOrWhiteSpace(url) && !UrlExists(url))
-                return null;
-            var webRequest = WebRequest.Create(url);
-
-            using (var response = webRequest.GetResponse())
-            using (var content = response.GetResponseStream())
-            {
-                if (content == null) return null;
-                using (var reader = new StreamReader(content))
-                {
-                    var strContent = reader.ReadToEnd();
-                    return strContent;
-                }
-            }
         }
     }
 }

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
 using System.Reflection;
-using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
-using URL_Parser.Controllers;
-using URL_Parser.Providers;
 using Autofac.Integration.WebApi;
+
+#endregion
 
 namespace URL_Parser.App_Start
 {

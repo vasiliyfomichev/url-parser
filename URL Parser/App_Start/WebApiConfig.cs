@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
 using System.Web.Http;
+
+#endregion
 
 namespace URL_Parser
 {

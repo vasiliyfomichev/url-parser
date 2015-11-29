@@ -1,16 +1,19 @@
-﻿using System.Security.Policy;
-using System.Web;
-using HtmlAgilityPack;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.Ajax.Utilities;
+using System.Web;
+using HtmlAgilityPack;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
 using URL_Parser.Properties;
+using URL_Parser.Utility;
+
+#endregion
 
 namespace URL_Parser.Providers
 {
@@ -18,9 +21,9 @@ namespace URL_Parser.Providers
     {
         #region IUrlService Members
 
-        public Task<Dictionary<string, int>> GetWordReportAsync(string url)
+        public Task<IEnumerable<WordReportItem>> GetWordReportAsync(string url, int maxReportSize)
         {
-            var task = Task.Run(() => ParseWords(url));
+            var task = Task.Run(() => ParseWords(url, maxReportSize));
             return task;
         }
 
@@ -56,7 +59,7 @@ namespace URL_Parser.Providers
             var cssPaths = UrlUtil.GetCssFilePaths(document);
             foreach (var path in cssPaths)
             {
-                var imageReferences = UrlUtil.GetImagesFromCssFile(path, context);
+                var imageReferences = ImageUtil.GetImagesFromCssFile(path, context);
                 if (imageReferences==null || !imageReferences.Any()) 
                     continue;
                 imageUrls.AddRange(imageReferences.Select(i=>new Image{
@@ -71,7 +74,7 @@ namespace URL_Parser.Providers
             {
                 var styleContent = inlineStyle.InnerText;
                 var regex = Settings.Default.ImageRegexPatternForCss;
-                var imageReferences = UrlUtil.GetImagesFromText(styleContent, regex);
+                var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
                 if (imageReferences == null || !imageReferences.Any())
                     continue;
                 imageUrls.AddRange(imageReferences.Select(i => new Image
@@ -85,7 +88,7 @@ namespace URL_Parser.Providers
             var scriptPaths = UrlUtil.GetScriptFilePaths(document);
             foreach (var path in scriptPaths)
             {
-                var imageReferences = UrlUtil.GetImagesFromScriptFile(path, context);
+                var imageReferences = ImageUtil.GetImagesFromScriptFile(path, context);
                 if (imageReferences == null || !imageReferences.Any())
                     continue;
                 imageUrls.AddRange(imageReferences.Select(i => new Image
@@ -101,7 +104,7 @@ namespace URL_Parser.Providers
             {
                 var styleContent = inlineScript.InnerText;
                 var regex = Settings.Default.ImageRegexPatternForJs;
-                var imageReferences = UrlUtil.GetImagesFromText(styleContent, regex);
+                var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
                 if (imageReferences == null || !imageReferences.Any())
                     continue;
                 imageUrls.AddRange(imageReferences.Select(i => new Image
@@ -110,39 +113,54 @@ namespace URL_Parser.Providers
                     Alt = i.Alt
                 }));
             }
-
-                //TODO:parse css and js references.
-                return imageUrls;
+            
+            return imageUrls;
         }
 
-        private static Dictionary<string, int> ParseWords(string url)
+        private static IEnumerable<WordReportItem> ParseWords(string url, int maxReportSize)
         {
             var document = new HtmlWeb().Load(url);
-            document.DocumentNode.SelectSingleNode("//body")
+
+            foreach (var script in document.DocumentNode.Descendants("script").ToArray())
+                script.Remove();
+            foreach (var style in document.DocumentNode.Descendants("style").ToArray())
+                style.Remove();
+
+            foreach (var comment in document.DocumentNode.SelectNodes("//comment()"))
+            {
+                comment.ParentNode.RemoveChild(comment);
+            }
+            var htmlElements = document.DocumentNode.SelectSingleNode("//body")
                 .DescendantsAndSelf()
-                .Where(n=>n.Name.ToLower()=="script" || n.Name.ToLower()=="style" || n.NodeType!= HtmlNodeType.Comment)
-                .ToList()
-                .ForEach(n=>n.Remove());
-            var root = document.DocumentNode.SelectSingleNode("//body");
-            if (root == null) return null; //TODO: weired shit with scripts and css
+                .ToList();
+
             var words = new StringBuilder();
 
-            words.Append(root.InnerText);
-            words.Append(string.Join(" ", root.DescendantsAndSelf()
-                .Where(d => !string.IsNullOrWhiteSpace(d.InnerText))
-                .Select(d => d.InnerText)));
-            var wordString = Regex.Replace(words.ToString(), @"\t|\n|\r", string.Empty);
+            var htmlTagsWithText =
+                htmlElements.OfType<HtmlTextNode>().Where(text => !string.IsNullOrWhiteSpace(text.Text));
+            Parallel.ForEach(htmlTagsWithText, (htmlTagWithText) => words.Append(StripNewLines(htmlTagWithText.Text) + " "));
 
+            var wordString = words.ToString();
             var source = wordString.Split(new[] { '.', '?', '!', ' ', ';', ':', ',' },
                 StringSplitOptions.RemoveEmptyEntries);
-
             var rankings = source.GroupBy(i => i).Select(g =>
-                new { Word = g.Key, Count = g.Count() }
+                new WordReportItem { Word = g.Key, Count = g.Count() }
             );
 
-            return rankings.ToDictionary(wc=>wc.Word, wc=>wc.Count);
+            rankings = rankings.OrderByDescending(w => w.Count);
+            var cleanRankings = rankings.Where(ranking => !Settings.Default.StopWords.Contains(ranking.Word)).ToList();
+
+            if (cleanRankings.Count() > maxReportSize)
+                cleanRankings = cleanRankings.Take(maxReportSize).ToList();
+
+            return cleanRankings;
         }
 
+        private static string StripNewLines(string text)
+        {
+            return string.IsNullOrEmpty(text) ? null : Regex.Replace(text, @"\t|\n|\r", string.Empty).Trim();
+        }
+        
         #endregion
 
     }

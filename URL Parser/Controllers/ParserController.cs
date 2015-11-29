@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using URL_Parser.Contracts;
 using URL_Parser.Filters;
+using URL_Parser.Models;
+
+#endregion
 
 namespace URL_Parser.Controllers
 {
@@ -27,16 +32,16 @@ namespace URL_Parser.Controllers
         #endregion
 
         [HttpGet, UrlValidator, UrlFormatter]
-        public async Task<IEnumerable<Models.Image>> Images(string url)
+        public async Task<IEnumerable<Image>> Images(string url)
         {
             var images = await _service.GetImagesAsync(url, HttpContext.Current);
             return images;
         }
 
         [HttpGet, UrlValidator, UrlFormatter]
-        public async Task<Dictionary<string,int>> WordReport(string url)
+        public async Task<IEnumerable<WordReportItem>> WordReport(string url, int maxReportSize = 20)
         {
-            var words = await _service.GetWordReportAsync(url);
+            var words = await _service.GetWordReportAsync(url, maxReportSize);
             return words;
         }
     }
