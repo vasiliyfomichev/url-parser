@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using URL_Parser.Models;
 
 namespace URL_Parser.Contracts
@@ -7,6 +8,6 @@ namespace URL_Parser.Contracts
     public interface IUrlService
     {
         Task<Dictionary<string, int>> GetWordReportAsync(string url);
-        Task<IEnumerable<Image>> GetImagesAsync(string url);
+        Task<IEnumerable<Image>> GetImagesAsync(string url, HttpContext context);
     }
 }

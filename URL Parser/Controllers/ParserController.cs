@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using URL_Parser.Contracts;
 using URL_Parser.Filters;
@@ -28,7 +29,7 @@ namespace URL_Parser.Controllers
         [HttpGet, UrlValidator, UrlFormatter]
         public async Task<IEnumerable<Models.Image>> Images(string url)
         {
-            var images = await _service.GetImagesAsync(url);
+            var images = await _service.GetImagesAsync(url, HttpContext.Current);
             return images;
         }
 

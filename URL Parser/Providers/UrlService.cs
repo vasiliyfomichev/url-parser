@@ -1,10 +1,13 @@
-﻿using HtmlAgilityPack;
+﻿using System.Security.Policy;
+using System.Web;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.Ajax.Utilities;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
 
@@ -20,9 +23,10 @@ namespace URL_Parser.Providers
             return task;
         }
 
-        public Task<IEnumerable<Image>> GetImagesAsync(string url)
+        public Task<IEnumerable<Image>> GetImagesAsync(string url, HttpContext context)
         {
-            var task = Task.Run(() => ParseImages(url));
+            if (context == null) return null;
+            var task = Task.Run(() => ParseImages(url, context));
             return task;
         }
 
@@ -30,24 +34,69 @@ namespace URL_Parser.Providers
 
         #region Private Methods
 
-        private static IEnumerable<Image> ParseImages(string url)
+        private static IEnumerable<Image> ParseImages(string url, HttpContext context)
         {
+                var document = new HtmlWeb().Load(url);
+                var imageUrls = document.DocumentNode.Descendants("img")
+                    .Select(e =>
+                        new Image
+                        {
+                            Src = UrlUtil.EnsureAbsoluteUrl(e.GetAttributeValue("src", null), url),
+                            Alt = e.GetAttributeValue("alt", null)
+                        })
+                    .Where(s => !string.IsNullOrEmpty(s.Src))
+                    .ToList();
 
-            var document = new HtmlWeb().Load(url);
-            var imageUrls = document.DocumentNode.Descendants("img")
-                                            .Select(e =>
-                                            new Image
-                                            {
-                                                Src = UrlUtil.EnsureAbsoluteUrl(e.GetAttributeValue("src", null), url),
-                                                Alt = e.GetAttributeValue("alt", null)
-                                            })
-                                            .Where(s => !string.IsNullOrEmpty(s.Src))
-                                            .ToList();
+                var urlsFromHead = UrlUtil.GetMetaImageUrls(document);
+                imageUrls.AddRange(urlsFromHead);
 
-            var urlsFromHead = UrlUtil.GetMetaImageUrls(document);
-            imageUrls.AddRange(urlsFromHead);
-            //TODO:parse css and js references.
-            return imageUrls;
+            // parsing css
+            // Referenced CCS
+            var cssPaths = UrlUtil.GetCssFilePaths(document);
+            foreach (var path in cssPaths)
+            {
+                var imageReferences = UrlUtil.GetImagesFromCssFile(path, context);
+                if (imageReferences==null || !imageReferences.Any()) 
+                    continue;
+                imageUrls.AddRange(imageReferences.Select(i=>new Image{
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
+                    Alt = i.Alt
+                    }));
+            }
+
+            // Inline CCS
+            var inlineStyles = document.DocumentNode.SelectNodes("//style");
+            foreach (var inlineStyle in inlineStyles)
+            {
+                var styleContent = inlineStyle.InnerText;
+                var imageReferences = UrlUtil.GetImagesFromText(styleContent);
+                if (imageReferences == null || !imageReferences.Any())
+                    continue;
+                imageUrls.AddRange(imageReferences.Select(i => new Image
+                {
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
+                    Alt = i.Alt
+                }));
+            }
+
+            // Referenced JS
+            var scriptPaths = UrlUtil.GetScriptFilePaths(document);
+            foreach (var path in scriptPaths)
+            {
+                var imageReferences = UrlUtil.GetImagesFromScriptFile(path, context);
+                if (imageReferences == null || !imageReferences.Any())
+                    continue;
+                imageUrls.AddRange(imageReferences.Select(i => new Image
+                {
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
+                    Alt = i.Alt
+                }));
+            }
+
+            
+
+                //TODO:parse css and js references.
+                return imageUrls;
         }
 
         private static Dictionary<string, int> ParseWords(string url)

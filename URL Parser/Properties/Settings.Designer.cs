@@ -31,5 +31,23 @@ namespace URL_Parser.Properties {
                 return ((int)(this["RequestTimeout"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("url\\([\'\"\"](?<bgpath>.*)[\'\\\"\"]\\)")]
+        public string ImageRegexPatternforCssFiles {
+            get {
+                return ((string)(this["ImageRegexPatternforCssFiles"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ImageRegexPatternForJsFiles {
+            get {
+                return ((string)(this["ImageRegexPatternForJsFiles"]));
+            }
+        }
     }
 }
