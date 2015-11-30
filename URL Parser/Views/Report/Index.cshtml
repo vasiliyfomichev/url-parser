@@ -10,8 +10,6 @@
                 <div class="input-container" ng-class="{flip: valid}">
                     <p class="status">{{title}}</p>
                     <input type="url" pattern="https?://.+" id="url" placeholder="enter URL and hit Enter" required ng-model="url" />
-                    
-                    @*<button type="submit" ng-click="parseUrl(url)">Generate Report</button>*@
                 </div>
             </form> 
         </section>
@@ -30,6 +28,9 @@
                     </ul>
                 </div>
             </nav>
+        </section>
+        <section class="container chart">
+            <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions"></canvas>
         </section>
     </div>
 </section>
