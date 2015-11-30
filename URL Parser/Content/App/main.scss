@@ -1,0 +1,9 @@
+﻿body {
+    overflow: hidden;
+}
+input:focus {outline: none; }
+
+@import "input";
+@import "slideshow";
+@import "word-report";
+@import "loader";

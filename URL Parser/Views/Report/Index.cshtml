@@ -1,10 +1,35 @@
 ﻿@{
     ViewBag.Title = "URL Parser";
-    Layout = "~/Views/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<section id="reports">
-    <section id="url-input">
-        <input type="text" id="url"/>
-        <input type="submit" value="Generate Report" />
-    </section>
+<section id="reports" ng-app="UrlParser">
+    <div id="container" ng-controller="UrlController">
+        <div class="loader more" ng-show="isWorking()"></div>
+        <section id="url-input">
+            <form autocomplete="off" ng-submit="parseUrl(url)">
+                <div class="input-container" ng-class="{flip: valid}">
+                    <p class="status">{{title}}</p>
+                    <input type="url" pattern="https?://.+" id="url" placeholder="enter URL and hit Enter" required ng-model="url" />
+                    
+                    @*<button type="submit" ng-click="parseUrl(url)">Generate Report</button>*@
+                </div>
+            </form> 
+        </section>
+        <section class="container slider" ng-show="hasDataBeenLoaded()">
+            <img ng-repeat="image in images" ng-src="{{image.Src}}" ng-alt="{{image.Alt}}" ng-hide="!isCurrentSlideIndex($index)" class="slide slide-animation" />
+
+            <a class="arrow prev" href="#" ng-click="nextSlide()"></a>
+            <a class="arrow next" href="#" ng-click="prevSlide()"></a>
+            <nav class="nav">
+                <div class="wrapper">
+                    <ul class="dots">
+                        <li class="dot" ng-repeat="image in images">
+                            <a href="#" ng-class="{'active':isCurrentSlideIndex($index)}"
+                               ng-click="setCurrentSlideIndex($index);">{{image.Alt}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </section>
+    </div>
 </section>

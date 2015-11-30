@@ -57,63 +57,75 @@ namespace URL_Parser.Providers
             // parsing css
             // Referenced CCS
             var cssPaths = UrlUtil.GetCssFilePaths(document);
-            foreach (var path in cssPaths)
+            if (cssPaths != null)
             {
-                var imageReferences = ImageUtil.GetImagesFromCssFile(path, context);
-                if (imageReferences==null || !imageReferences.Any()) 
-                    continue;
-                imageUrls.AddRange(imageReferences.Select(i=>new Image{
-                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
-                    Alt = i.Alt
+                foreach (var path in cssPaths)
+                {
+                    var imageReferences = ImageUtil.GetImagesFromCssFile(path, context);
+                    if (imageReferences == null || !imageReferences.Any())
+                        continue;
+                    imageUrls.AddRange(imageReferences.Select(i => new Image
+                    {
+                        Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
+                        Alt = i.Alt
                     }));
+                }
             }
 
             // Inline CCS
             var inlineStyles = document.DocumentNode.SelectNodes("//style");
-            foreach (var inlineStyle in inlineStyles)
+            if (inlineStyles != null)
             {
-                var styleContent = inlineStyle.InnerText;
-                var regex = Settings.Default.ImageRegexPatternForCss;
-                var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
-                if (imageReferences == null || !imageReferences.Any())
-                    continue;
-                imageUrls.AddRange(imageReferences.Select(i => new Image
+                foreach (var inlineStyle in inlineStyles)
                 {
-                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
-                    Alt = i.Alt
-                }));
+                    var styleContent = inlineStyle.InnerText;
+                    var regex = Settings.Default.ImageRegexPatternForCss;
+                    var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
+                    if (imageReferences == null || !imageReferences.Any())
+                        continue;
+                    imageUrls.AddRange(imageReferences.Select(i => new Image
+                    {
+                        Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
+                        Alt = i.Alt
+                    }));
+                }
             }
 
             // Referenced JS
             var scriptPaths = UrlUtil.GetScriptFilePaths(document);
-            foreach (var path in scriptPaths)
+            if (scriptPaths != null)
             {
-                var imageReferences = ImageUtil.GetImagesFromScriptFile(path, context);
-                if (imageReferences == null || !imageReferences.Any())
-                    continue;
-                imageUrls.AddRange(imageReferences.Select(i => new Image
+                foreach (var path in scriptPaths)
                 {
-                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
-                    Alt = i.Alt
-                }));
+                    var imageReferences = ImageUtil.GetImagesFromScriptFile(path, context);
+                    if (imageReferences == null || !imageReferences.Any())
+                        continue;
+                    imageUrls.AddRange(imageReferences.Select(i => new Image
+                    {
+                        Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
+                        Alt = i.Alt
+                    }));
+                }
             }
 
             // Inline JS
             var inlineScripts = document.DocumentNode.SelectNodes("//script");
-            foreach (var inlineScript in inlineScripts)
+            if (inlineScripts != null)
             {
-                var styleContent = inlineScript.InnerText;
-                var regex = Settings.Default.ImageRegexPatternForJs;
-                var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
-                if (imageReferences == null || !imageReferences.Any())
-                    continue;
-                imageUrls.AddRange(imageReferences.Select(i => new Image
+                foreach (var inlineScript in inlineScripts)
                 {
-                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
-                    Alt = i.Alt
-                }));
+                    var styleContent = inlineScript.InnerText;
+                    var regex = Settings.Default.ImageRegexPatternForJs;
+                    var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
+                    if (imageReferences == null || !imageReferences.Any())
+                        continue;
+                    imageUrls.AddRange(imageReferences.Select(i => new Image
+                    {
+                        Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
+                        Alt = i.Alt
+                    }));
+                }
             }
-            
             return imageUrls;
         }
 
