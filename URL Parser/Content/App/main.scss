@@ -1,9 +1,15 @@
-﻿body {
+﻿html {
+    height: 101%;
+}
+
+body {
     
 }
 input:focus {outline: none; }
+.hidden{display:none;}
 
 @import "input";
 @import "slideshow";
 @import "word-report";
 @import "loader";
+@import "reports";

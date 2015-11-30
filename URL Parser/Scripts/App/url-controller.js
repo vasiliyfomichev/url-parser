@@ -9,11 +9,16 @@
             images: false,
             words: false,
         }
+        $scope.loadStarted = false;
+
         $scope.working = {
             images: false,
             words: false,
-            all: false
         }
+
+        $scope.isDataLoaded = false;
+
+
 
         // Chart options
         $scope.chartData = {
@@ -62,11 +67,12 @@
         $scope.currentIndex = 0;
 
         $scope.isWorking = function() {
-            return $scope.working.words || $scope.working.images;
+            var isWorking = ($scope.working.images && $scope.working.words);
+            return isWorking;
         }
 
-        $scope.hasDataBeenLoaded = function() {
-            return $scope.loaded.all;
+        $scope.dataHasBeenLoaded = function () {
+            return $scope.isDataLoaded; // $scope.loaded.all;
         }
 
         $scope.setCurrentSlideIndex = function(index) {
@@ -85,13 +91,16 @@
             $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.images.length - 1;
         };
 
-        $scope.parseUrl = function(url) {
+        $scope.parseUrl = function (url) {
             var isValidUrl = validateUrl(url);
             if (!isValidUrl) return;
+            $scope.isDataLoaded = false;
+            $scope.loadStarted = true;
+            resetChart();
             $scope.title = "loading reports...";
-            getImages(url);
-            var maxResultsToShow = 10;
-            getWordReport(url, maxResultsToShow);
+            loadImages(url);
+            var maxResults = 10;
+            loadWordReport(url, maxResults);
         }
 
         function validateUrl(url) {
@@ -99,12 +108,13 @@
             return $scope.valid = true;
         };
 
-        function getImages(url) {
+        function loadImages(url) {
             $scope.working.images = true;
             $http.get("/api/parser/images?url=" + url).success(function(data, status, headers, config) {
                 $scope.images = data;
-                $scope.working = false;
+                
                 $scope.loaded.images = true;
+                $scope.working.images = false;
                 completeDataLoad();
             }).error(function(data, status, headers, config) {
                 $scope.title = "Oops... something went wrong";
@@ -112,20 +122,24 @@
             });
         }
 
-        function getWordReport(url, maxReportSize) {
+        function resetChart() {
+            $scope.chartData.labels = [];
+            $scope.chartData.datasets[0].data = [];
+        }
+
+        function loadWordReport(url, maxReportSize) {
             $scope.working.words = true;
             $http.get("/api/parser/wordreport?url=" + url + "&maxReportSize=" + maxReportSize).success(function(data, status, headers, config) {
-                //$scope.words = data;
                 if (typeof data !== 'undefined' && data != null) {
                     for (var i = 0; i < data.length; i++) {
                         $scope.chartData.labels.push(data[i].Word.toLowerCase());
                         $scope.chartData.datasets[0].data.push(data[i].Count);
                     }
                 }
-
                 $scope.title = data.title;
-                $scope.working = false;
+                
                 $scope.loaded.words = true;
+                $scope.working.words = false;
                 completeDataLoad();
             }).error(function(data, status, headers, config) {
                 $scope.title = "Oops... something went wrong";
@@ -138,7 +152,7 @@
                 $scope.title = "";
             }
             if ($scope.loaded.images && $scope.loaded.words) {
-                $scope.loaded.all = true;
+                $scope.isDataLoaded = true;
             }
         }
     })

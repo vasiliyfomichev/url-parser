@@ -157,7 +157,14 @@ namespace URL_Parser.Properties {
             "  <string>will</string>\r\n  <string>with</string>\r\n  <string>within</string>\r\n  <" +
             "string>without</string>\r\n  <string>would</string>\r\n  <string>yet</string>\r\n  <st" +
             "ring>you</string>\r\n  <string>your</string>\r\n  <string>yours</string>\r\n  <string>" +
-            "yourself</string>\r\n  <string>yourselves</string>\r\n</ArrayOfString>")]
+            "yourself</string>\r\n  <string>yourselves</string>\r\n  <string>-</string>\r\n  <strin" +
+            "g>+</string>\r\n  <string>=</string>\r\n  <string>/</string>\r\n  <string>?</string>\r\n" +
+            "  <string>.</string>\r\n  <string>,</string>\r\n  <string>!</string>\r\n  <string>@</s" +
+            "tring>\r\n  <string>#</string>\r\n  <string>$</string>\r\n  <string>%</string>\r\n  <str" +
+            "ing>^</string>\r\n  <string>&amp;</string>\r\n  <string>*</string>\r\n  <string>(</str" +
+            "ing>\r\n  <string>)</string>\r\n  <string>[</string>\r\n  <string>]</string>\r\n  <strin" +
+            "g>{</string>\r\n  <string>}</string>\r\n  <string>~</string>\r\n  <string>`</string>\r\n" +
+            "</ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection StopWords {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["StopWords"]));

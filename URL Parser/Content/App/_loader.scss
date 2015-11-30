@@ -10,7 +10,12 @@
 * {margin: 0; padding: 0;}
 
 .loader {
-  top: 125px;
+  top: 0;
+   transition-property: display;
+   transition-duration: 2s;
+   -webkit-transition-property: display; /* Safari */
+   -webkit-transition-duration: 2s; /* Safari */
+   position:absolute;
 }
 
 /* Loader with three blocks */

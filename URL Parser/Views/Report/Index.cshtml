@@ -5,32 +5,33 @@
 <section id="reports" ng-app="UrlParser">
     <div id="container" ng-controller="UrlController">
         <div class="loader more" ng-show="isWorking()"></div>
-        <section id="url-input">
+        <section class="url-input" ng-class="{'set':loadStarted}">
             <form autocomplete="off" ng-submit="parseUrl(url)">
                 <div class="input-container" ng-class="{flip: valid}">
-                    <p class="status">{{title}}</p>
                     <input type="url" pattern="https?://.+" id="url" placeholder="enter URL and hit Enter" required ng-model="url" />
                 </div>
-            </form> 
+            </form>
         </section>
-        <section class="container slider" ng-show="hasDataBeenLoaded()">
-            <img ng-repeat="image in images" ng-src="{{image.Src}}" ng-alt="{{image.Alt}}" ng-hide="!isCurrentSlideIndex($index)" class="slide slide-animation" />
+        <div class="reports">
+            <section class="container slider" ng-class="{'hidden':!dataHasBeenLoaded()}">
+                <img ng-repeat="image in images" ng-src="{{image.Src}}" ng-alt="{{image.Alt}}" ng-hide="!isCurrentSlideIndex($index)" class="slide slide-animation" />
 
-            <a class="arrow prev" href="#" ng-click="nextSlide()"></a>
-            <a class="arrow next" href="#" ng-click="prevSlide()"></a>
-            <nav class="nav">
-                <div class="wrapper">
-                    <ul class="dots">
-                        <li class="dot" ng-repeat="image in images">
-                            <a href="#" ng-class="{'active':isCurrentSlideIndex($index)}"
-                               ng-click="setCurrentSlideIndex($index);">{{image.Alt}}</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </section>
-        <section class="container chart">
-            <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions"></canvas>
-        </section>
+                <a class="arrow prev" href="#" ng-click="nextSlide()"></a>
+                <a class="arrow next" href="#" ng-click="prevSlide()"></a>
+                <nav class="nav">
+                    <div class="wrapper">
+                        <ul class="dots">
+                            <li class="dot" ng-repeat="image in images">
+                                <a href="#" ng-class="{'active':isCurrentSlideIndex($index)}"
+                                   ng-click="setCurrentSlideIndex($index);">{{image.Alt}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </section>
+            <section class="container chart">
+                <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions" ng-hide="isWorking()"></canvas>
+            </section>
+        </div>
     </div>
 </section>

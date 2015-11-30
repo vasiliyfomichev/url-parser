@@ -333,6 +333,29 @@
   &lt;string&gt;yours&lt;/string&gt;
   &lt;string&gt;yourself&lt;/string&gt;
   &lt;string&gt;yourselves&lt;/string&gt;
+  &lt;string&gt;-&lt;/string&gt;
+  &lt;string&gt;+&lt;/string&gt;
+  &lt;string&gt;=&lt;/string&gt;
+  &lt;string&gt;/&lt;/string&gt;
+  &lt;string&gt;?&lt;/string&gt;
+  &lt;string&gt;.&lt;/string&gt;
+  &lt;string&gt;,&lt;/string&gt;
+  &lt;string&gt;!&lt;/string&gt;
+  &lt;string&gt;@&lt;/string&gt;
+  &lt;string&gt;#&lt;/string&gt;
+  &lt;string&gt;$&lt;/string&gt;
+  &lt;string&gt;%&lt;/string&gt;
+  &lt;string&gt;^&lt;/string&gt;
+  &lt;string&gt;&amp;amp;&lt;/string&gt;
+  &lt;string&gt;*&lt;/string&gt;
+  &lt;string&gt;(&lt;/string&gt;
+  &lt;string&gt;)&lt;/string&gt;
+  &lt;string&gt;[&lt;/string&gt;
+  &lt;string&gt;]&lt;/string&gt;
+  &lt;string&gt;{&lt;/string&gt;
+  &lt;string&gt;}&lt;/string&gt;
+  &lt;string&gt;~&lt;/string&gt;
+  &lt;string&gt;`&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>
