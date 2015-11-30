@@ -16,7 +16,8 @@ namespace URL_Parser.App_Start
                          "~/Scripts/angular.min.js",
                          "~/Scripts/angular-animate.min.js",
                          "~/scripts/twinmax.min.js",
-                         "~/scripts/tc-angular-chartjs.min.js")
+                         "~/scripts/tc-angular-chartjs.min.js",
+                         "~/scripts/angular-touch.min.js")
                 .IncludeDirectory("~/scripts/app", "*.js"));
 
             bundles.Add(new StyleBundle("~/styles")

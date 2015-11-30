@@ -1,4 +1,4 @@
-﻿angular.module('UrlParser', ['tc.chartjs'])
+﻿angular.module('UrlParser', ['tc.chartjs', 'ngAnimate', 'ngTouch'])
     .controller('UrlController', function($scope, $http) {
         $scope.valid = true;
         $scope.url = null;

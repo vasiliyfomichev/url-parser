@@ -43,7 +43,6 @@ section.url-input {
     text-align: center; }
 
 .slider {
-  width: 800px;
   height: 400px;
   overflow: hidden;
   position: relative;
@@ -52,11 +51,11 @@ section.url-input {
   margin-top: 20px; }
 
 .slide {
-  margin: 0 auto;
-  display: block;
-  position: relative;
-  vertical-align: middle;
-  max-height: 300px; }
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-height: 100%;
+  max-width: 100%; }
 
 .arrow {
   position: absolute;
@@ -102,9 +101,6 @@ NAV
   bottom: -4px;
   right: 0;
   height: 48px; }
-
-.nonDraggableImage {
-  -webkit-user-drag: none; }
 
 .nav .wrapper {
   margin: 0 auto;
@@ -230,7 +226,7 @@ NAV
   100% {
     text-indent: calc(150% - 10px); } }
 div.reports {
-  top: 20%;
+  top: 13%;
   position: absolute;
   width: 100%; }
 

@@ -1,5 +1,8 @@
-﻿.slider {
-    width: 800px;
+﻿body {
+    
+}
+
+.slider {
     height: 400px;
     overflow: hidden;
     position: relative;
@@ -9,11 +12,11 @@
 }
 
 .slide {
-        margin: 0 auto;
-    display: block;
-    position: relative;
-    vertical-align: middle;
-    max-height:300px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-height:100%;
+    max-width:100%;
 }
 
 .arrow {
@@ -68,10 +71,6 @@ NAV
     bottom: -4px;
     right: 0;
     height: 48px;
-}
-
-.nonDraggableImage{
-    -webkit-user-drag: none;
 }
 
 .nav .wrapper {

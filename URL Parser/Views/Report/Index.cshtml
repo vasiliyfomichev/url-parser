@@ -8,29 +8,33 @@
         <section class="url-input" ng-class="{'set':loadStarted}">
             <form autocomplete="off" ng-submit="parseUrl(url)">
                 <div class="input-container" ng-class="{flip: valid}">
-                    <input type="url" pattern="https?://.+" id="url" placeholder="enter URL and hit Enter" required ng-model="url" />
+                    <input type="url" pattern="https?://.+" id="url" placeholder="enter url and hit enter" required ng-model="url" />
                 </div>
             </form>
         </section>
-        <div class="reports">
-            <section class="container slider" ng-class="{'hidden':!dataHasBeenLoaded()}">
-                <img ng-repeat="image in images" ng-src="{{image.Src}}" ng-alt="{{image.Alt}}" ng-hide="!isCurrentSlideIndex($index)" class="slide slide-animation" />
+        <div class="reports" >
+            <section class="container" ng-class="{'hidden':!dataHasBeenLoaded()}">
+                <h2>website images</h2>
+                <div class="slider">
+                    <img ng-repeat="image in images" ng-src="{{image.Src}}" ng-alt="{{image.Alt}}" ng-hide="!isCurrentSlideIndex($index)" class="slide slide-animation" />
 
-                <a class="arrow prev" href="#" ng-click="nextSlide()"></a>
-                <a class="arrow next" href="#" ng-click="prevSlide()"></a>
-                <nav class="nav">
-                    <div class="wrapper">
-                        <ul class="dots">
-                            <li class="dot" ng-repeat="image in images">
-                                <a href="#" ng-class="{'active':isCurrentSlideIndex($index)}"
-                                   ng-click="setCurrentSlideIndex($index);">{{image.Alt}}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                    <a class="arrow prev" href="#" ng-click="nextSlide()"></a>
+                    <a class="arrow next" href="#" ng-click="prevSlide()"></a>
+                    <nav class="nav">
+                        <div class="wrapper">
+                            <ul class="dots">
+                                <li class="dot" ng-repeat="image in images">
+                                    <a href="#" ng-class="{'active':isCurrentSlideIndex($index)}"
+                                       ng-click="setCurrentSlideIndex($index);">{{image.Alt}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
             </section>
             <section class="container chart">
-                <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions" ng-hide="isWorking()"></canvas>
+                <h2 ng-class="{'hidden':!dataHasBeenLoaded()}">10 most used words</h2>
+                <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions" ng-class="{'hidden':!dataHasBeenLoaded()}"></canvas>
             </section>
         </div>
     </div>
