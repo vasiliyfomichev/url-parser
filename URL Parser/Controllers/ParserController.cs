@@ -5,9 +5,12 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using log4net;
+using log4net.Core;
 using URL_Parser.Contracts;
 using URL_Parser.Filters;
 using URL_Parser.Models;
+using System;
 
 #endregion
 
@@ -18,14 +21,15 @@ namespace URL_Parser.Controllers
         #region Fields
 
         private readonly IUrlService _service;
+        private readonly ILog _logger;
 
         #endregion
 
         #region Constructor
 
-        public ParserController(IUrlService service)
+        public ParserController(IUrlService service, ILog logger)
         {
-            Debug.Assert(service!=null, "Bad service instance passed to controller.");
+            _logger = logger;
             _service = service;
         }
 
@@ -34,8 +38,16 @@ namespace URL_Parser.Controllers
         [HttpGet, UrlValidator, UrlFormatter]
         public async Task<IEnumerable<Image>> Images(string url)
         {
-            var images = await _service.GetImagesAsync(url, HttpContext.Current);
-            return images;
+            try
+            {
+                var images = await _service.GetImagesAsync(url, HttpContext.Current);
+                return images;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex);
+                throw ex;
+            }
         }
 
         [HttpGet, UrlValidator, UrlFormatter]

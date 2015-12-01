@@ -6,10 +6,11 @@ using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
+using URL_Parser.Modules;
 
 #endregion
 
-namespace URL_Parser.App_Start
+namespace URL_Parser
 {
     public class AutofacConfig
     {
@@ -17,13 +18,9 @@ namespace URL_Parser.App_Start
         {
             var builder = new ContainerBuilder();
 
-            //builder.RegisterType<UrlService>().As<IUrlService>().InstancePerRequest();
-            var dataAccess = Assembly.GetExecutingAssembly();
-
-            builder.RegisterAssemblyTypes(dataAccess)
-                   .Where(t => t.Name.EndsWith("Service"))
-                   .AsImplementedInterfaces();
-
+            
+            builder.RegisterModule(new LoggingModule());
+            builder.RegisterModule(new ServiceModule());
 
             // Register your Web API controllers.
             builder.RegisterApiControllers(Assembly.GetExecutingAssembly());

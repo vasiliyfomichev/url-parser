@@ -4,7 +4,7 @@ using System.Web.Optimization;
 
 #endregion
 
-namespace URL_Parser.App_Start
+namespace URL_Parser
 {
     public static class BundleConfig
     {
