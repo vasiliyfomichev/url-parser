@@ -24,6 +24,8 @@ section.url-input {
   z-index: 1000; }
   section.url-input.set {
     top: 3%; }
+  section.url-input .error span {
+    color: red; }
   section.url-input input[type=url] {
     background: #fff;
     border: none;

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
-using URL_Parser.Modules;
+using URL_Parser.Configuration.Modules;
 
 #endregion
 

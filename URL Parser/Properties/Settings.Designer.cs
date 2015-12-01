@@ -170,5 +170,59 @@ namespace URL_Parser.Properties {
                 return ((global::System.Collections.Specialized.StringCollection)(this["StopWords"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("no.reply.urlparser@gmail.com")]
+        public string NoReplyEmail {
+            get {
+                return ((string)(this["NoReplyEmail"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("vasya.fomichev@gmail.com")]
+        public string SupportEmail {
+            get {
+                return ((string)(this["SupportEmail"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("mail.gmail.com")]
+        public string SMTPServer {
+            get {
+                return ((string)(this["SMTPServer"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("587")]
+        public int SMTPPort {
+            get {
+                return ((int)(this["SMTPPort"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SSLEnabled {
+            get {
+                return ((bool)(this["SSLEnabled"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SitecoreR0ck$!")]
+        public string NoReplyPassword {
+            get {
+                return ((string)(this["NoReplyPassword"]));
+            }
+        }
     }
 }

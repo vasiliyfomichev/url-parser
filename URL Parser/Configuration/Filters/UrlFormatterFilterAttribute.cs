@@ -7,9 +7,9 @@ using URL_Parser.Utility;
 
 #endregion
 
-namespace URL_Parser.Filters
+namespace URL_Parser.Configuration.Filters
 {
-    public class UrlFormatter : ActionFilterAttribute
+    public class UrlFormatterFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {

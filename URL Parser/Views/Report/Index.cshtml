@@ -10,10 +10,18 @@
                 <div class="input-container" ng-class="{flip: valid}">
                     <input type="url" pattern="https?://.+" id="url" placeholder="enter url and hit enter" required ng-model="url" />
                 </div>
+                <div class="error" ng-class="{'hidden':!hasErrors()}">
+                    <ul>
+                        <li ng-repeat="error in errors">
+                            <span>{{error}}</span>
+                        </li>
+                    </ul>
+                    <span>A team of trained monkeys has been dispatched to troubleshoot. Please try a different URL.</span>
+                </div>
             </form>
         </section>
         <div class="reports" >
-            <section class="container" ng-class="{'hidden':!dataHasBeenLoaded()}">
+            <section class="container" ng-class="{'hidden':!showSlideshow()}">
                 <h2>website images</h2>
                 <div class="slider">
                     <img ng-repeat="image in images" ng-src="{{image.Src}}" ng-alt="{{image.Alt}}" ng-hide="!isCurrentSlideIndex($index)" class="slide slide-animation" />
@@ -33,8 +41,8 @@
                 </div>
             </section>
             <section class="container chart">
-                <h2 ng-class="{'hidden':!dataHasBeenLoaded()}">10 most used words</h2>
-                <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions" ng-class="{'hidden':!dataHasBeenLoaded()}"></canvas>
+                <h2 ng-class="{'hidden':!showWordReport()}">{{maxReportSize}} most used words</h2>
+                <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions" ng-class="{'hidden':!showWordReport()}"></canvas>
             </section>
         </div>
     </div>

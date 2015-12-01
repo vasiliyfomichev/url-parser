@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Autofac;
 
-namespace URL_Parser.Modules
+namespace URL_Parser.Configuration.Modules
 {
     public class ServiceModule : Autofac.Module
     {

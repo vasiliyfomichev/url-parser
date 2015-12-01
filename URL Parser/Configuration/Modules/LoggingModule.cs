@@ -2,7 +2,7 @@
 using Autofac.Core;
 using log4net;
 
-namespace URL_Parser.Modules
+namespace URL_Parser.Configuration.Modules
 {
     public class LoggingModule : Autofac.Module
     {

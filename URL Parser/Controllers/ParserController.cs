@@ -7,8 +7,8 @@ using System.Web;
 using System.Web.Http;
 using log4net;
 using log4net.Core;
+using URL_Parser.Configuration.Filters;
 using URL_Parser.Contracts;
-using URL_Parser.Filters;
 using URL_Parser.Models;
 using System;
 
@@ -35,26 +35,20 @@ namespace URL_Parser.Controllers
 
         #endregion
 
-        [HttpGet, UrlValidator, UrlFormatter]
-        public async Task<IEnumerable<Image>> Images(string url)
+        [HttpGet]
+        public async Task<IHttpActionResult> Images(string url)
         {
-            try
-            {
-                var images = await _service.GetImagesAsync(url, HttpContext.Current);
-                return images;
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex);
-                throw ex;
-            }
+            _logger.Debug(string.Format("Received image parsing request for {0}.", url));
+            var images = await _service.GetImagesAsync(url, HttpContext.Current);
+            return Ok(images);
         }
 
-        [HttpGet, UrlValidator, UrlFormatter]
-        public async Task<IEnumerable<WordReportItem>> WordReport(string url, int maxReportSize = 20)
+        [HttpGet]
+        public async Task<IHttpActionResult> WordReport(string url, int maxReportSize = 20)
         {
+            _logger.Debug(string.Format("Received word parsing request for {0} URL with a {1} limit.", url, maxReportSize));
             var words = await _service.GetWordReportAsync(url, maxReportSize);
-            return words;
+            return Ok(words);
         }
     }
 }

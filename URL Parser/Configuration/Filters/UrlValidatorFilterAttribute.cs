@@ -8,9 +8,9 @@ using URL_Parser.Utility;
 
 #endregion
 
-namespace URL_Parser.Filters
+namespace URL_Parser.Configuration.Filters
 {
-    public class UrlValidator : ActionFilterAttribute
+    public class UrlValidatorFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)
         {

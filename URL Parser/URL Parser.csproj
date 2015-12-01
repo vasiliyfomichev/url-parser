@@ -172,14 +172,16 @@
   <ItemGroup>
     <Compile Include="App_Start\AutofacConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\Modules\LoggingModule.cs" />
-    <Compile Include="App_Start\Modules\ServiceModule.cs" />
+    <Compile Include="Configuration\ErrorNotifier.cs" />
+    <Compile Include="Configuration\Filters\GlobalExceptionFilterAttribute.cs" />
+    <Compile Include="Configuration\Modules\LoggingModule.cs" />
+    <Compile Include="Configuration\Modules\ServiceModule.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ParserController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
-    <Compile Include="Filters\UrlFormatter.cs" />
-    <Compile Include="Filters\UrlValidator.cs" />
+    <Compile Include="Configuration\Filters\UrlFormatterFilterAttribute.cs" />
+    <Compile Include="Configuration\Filters\UrlValidatorFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

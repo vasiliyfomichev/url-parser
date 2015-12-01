@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Web.Http;
+using URL_Parser.Configuration.Filters;
 
 #endregion
 
@@ -10,6 +11,10 @@ namespace URL_Parser
     {
         public static void Register(HttpConfiguration config)
         {
+
+            config.Filters.Add(new UrlValidatorFilterAttribute());
+            config.Filters.Add(new UrlFormatterFilterAttribute());
+            config.Filters.Add(new GlobalExceptionFilterAttribute());
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(

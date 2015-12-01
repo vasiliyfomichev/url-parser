@@ -10,11 +10,12 @@
             words: false,
         }
         $scope.loadStarted = false;
-
+        $scope.errors = [];
         $scope.working = {
             images: false,
             words: false,
         }
+        $scope.maxReportSize = 10;
 
         $scope.isDataLoaded = false;
 
@@ -25,7 +26,7 @@
             labels: [],
             datasets: [
                 {
-                    label: '10 Most used words',
+                    label: $scope.maxReportSize+' Most used words',
                     fillColor: 'rgba(151,187,205,0.5)',
                     strokeColor: 'rgba(151,187,205,0.8)',
                     highlightFill: 'rgba(151,187,205,0.75)',
@@ -64,6 +65,20 @@
             barDatasetSpacing: 1
         };
 
+        $scope.hasErrors = function() {
+            return $scope.errors.length > 0;
+        }
+
+        $scope.showSlideshow = function() {
+            var shouldShow = $scope.dataHasBeenLoaded() && $scope.images.length > 0;
+            return shouldShow;
+        }
+
+        $scope.showWordReport = function () {
+            var shouldShow = $scope.dataHasBeenLoaded() && $scope.chartData.datasets[0].data.length > 0;
+            return shouldShow;
+        }
+
         $scope.currentIndex = 0;
 
         $scope.isWorking = function() {
@@ -92,6 +107,7 @@
         };
 
         $scope.parseUrl = function (url) {
+            $scope.errors = [];
             var isValidUrl = validateUrl(url);
             if (!isValidUrl) return;
             $scope.isDataLoaded = false;
@@ -99,8 +115,7 @@
             resetChart();
             $scope.title = "loading reports...";
             loadImages(url);
-            var maxResults = 10;
-            loadWordReport(url, maxResults);
+            loadWordReport(url, $scope.maxReportSize);
         }
 
         function validateUrl(url) {
@@ -116,9 +131,11 @@
                 $scope.loaded.images = true;
                 $scope.working.images = false;
                 completeDataLoad();
-            }).error(function(data, status, headers, config) {
-                $scope.title = "Oops... something went wrong";
+            }).error(function (data, status, headers, config) {
+                $scope.errors.push("Problems loading website images.");
                 $scope.working.words = false;
+                $scope.loaded.images = true;
+                completeDataLoad();
             });
         }
 
@@ -142,8 +159,10 @@
                 $scope.working.words = false;
                 completeDataLoad();
             }).error(function(data, status, headers, config) {
-                $scope.title = "Oops... something went wrong";
+                $scope.errors.push("Problems loading the word report.");
                 $scope.working.words = false;
+                $scope.loaded.words = true;
+                completeDataLoad();
             });
         }
 
