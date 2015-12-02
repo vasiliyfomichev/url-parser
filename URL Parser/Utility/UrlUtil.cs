@@ -55,7 +55,7 @@ namespace URL_Parser.Utility
 
             var uri = new Uri(requestUrl);
             if (!url.StartsWith("..") && url.StartsWith("/"))
-                return uri.Scheme + "://" + (uri.Host.EndsWith("/") ? uri.Host : uri.Host + "/") + url;
+                return uri.Scheme + "://" + (uri.Host.EndsWith("/") ? uri.Host : uri.Host + "/") + url.TrimStart('/');
 
             var urlParts = uri.LocalPath.Split(new[]{'/'}, StringSplitOptions.RemoveEmptyEntries);
             var levelUpCount = 1;
@@ -132,8 +132,8 @@ namespace URL_Parser.Utility
             var rootNode = document.DocumentNode;
             if (rootNode == null) return null;
 
-            var linkNodes = rootNode.SelectNodes("//link").ToList();
-            if (!linkNodes.Any())
+            var linkNodes = rootNode.SelectNodes("//link");
+            if (linkNodes == null || !linkNodes.Any())
                 return null;
 
             var nodes = linkNodes.Where(n =>n!=null &&
@@ -149,8 +149,8 @@ namespace URL_Parser.Utility
             var rootNode = document.DocumentNode;
             if (rootNode == null) return null;
 
-            var scriptNodes = rootNode.SelectNodes("//script").ToList();
-            if (!scriptNodes.Any())
+            var scriptNodes = rootNode.SelectNodes("//script");
+            if (scriptNodes==null || !scriptNodes.Any())
                 return null;
 
             var nodes = scriptNodes
