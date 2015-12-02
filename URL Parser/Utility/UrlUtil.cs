@@ -5,10 +5,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
 using URL_Parser.Models;
+using URL_Parser.Properties;
 
 #endregion
 
@@ -29,7 +32,7 @@ namespace URL_Parser.Utility
         public static bool IsImageUrl(string url)
         {
             url = url.ToLower();
-            var regex = new Regex(@"^.*\.(jpg|gif|jpeg|png|ico)$");
+            var regex = new Regex(Settings.Default.IsImageUrlRegex);
             var match = regex.Match(url);
             return match.Success;
         }
@@ -79,19 +82,18 @@ namespace URL_Parser.Utility
             return Uri.TryCreate(url, UriKind.Absolute, out result);
         }
 
-        public static bool UrlExists(string url)
+        public static async Task<bool> UrlExistsAsync(string url)
         {
             if (string.IsNullOrWhiteSpace(url)) return false;
-            url = EnsureAbsoluteUrlFormat(url, HttpContext.Current);
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = WebRequestMethods.Http.Head;
-            var response = (HttpWebResponse)request.GetResponse();
-            return response.StatusCode == HttpStatusCode.OK;
+            var client = new HttpClient();
+            var httpRequestMsg = new HttpRequestMessage(HttpMethod.Head, url);
+            var response = await client.SendAsync(httpRequestMsg).ConfigureAwait(false);
+            return response.IsSuccessStatusCode;
         }
 
         public static string GetUrlContent(string url)
         {
-            if (string.IsNullOrWhiteSpace(url) && !UrlExists(url))
+            if (string.IsNullOrWhiteSpace(url) && !UrlExistsAsync(url).GetAwaiter().GetResult())
                 return null;
             var webRequest = WebRequest.Create(url);
 

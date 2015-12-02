@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using HtmlAgilityPack;
 using URL_Parser.Models;
 using URL_Parser.Properties;
 
@@ -14,6 +15,108 @@ namespace URL_Parser.Utility
 {
     public class ImageUtil
     {
+
+        public static IEnumerable<Image> GetImagesFromImageTags(HtmlDocument document, string url)
+        {
+            var imageUrls = document.DocumentNode.Descendants("img")
+                    .Select(e =>
+                        new Image
+                        {
+                            Src = UrlUtil.EnsureAbsoluteUrl(e.GetAttributeValue("src", null), url),
+                            Alt = e.GetAttributeValue("alt", null)
+                        })
+                    .Where(s => !string.IsNullOrEmpty(s.Src))
+                    .ToList();
+            return imageUrls;
+        }
+
+        public static IEnumerable<Image> GetImagesFromReferencedCss(HtmlDocument document, string url,
+            HttpContext context)
+        {
+            var cssPaths = UrlUtil.GetCssFilePaths(document);
+            var imageUrls = new List<Image>();
+            if (cssPaths == null || !cssPaths.Any()) return imageUrls;
+            foreach (var path in cssPaths)
+            {
+                var imageReferences = ImageUtil.GetImagesFromCssFile(path, context);
+                if (imageReferences == null || !imageReferences.Any())
+                    continue;
+                imageUrls.AddRange(imageReferences.Select(i => new Image
+                {
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
+                    Alt = i.Alt
+                }));
+            }
+            return imageUrls;
+        }
+
+        public static IEnumerable<Image> GetImagesFromInlineCss(HtmlDocument document, string url)
+        {
+            var imageUrls = new List<Image>();
+            var inlineStyles = document.DocumentNode.SelectNodes("//style");
+            if (inlineStyles == null || !inlineStyles.Any()) return imageUrls;
+
+            foreach (var inlineStyle in inlineStyles)
+            {
+                var styleContent = inlineStyle.InnerText;
+                var regex = Settings.Default.ImageRegexPatternForCss;
+                var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
+                if (imageReferences == null || !imageReferences.Any())
+                    continue;
+                imageUrls.AddRange(imageReferences.Select(i => new Image
+                {
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
+                    Alt = i.Alt
+                }));
+            }
+            return imageUrls;
+        }
+
+
+        public static IEnumerable<Image> GetImagesFromReferencedJs(HtmlDocument document, string url, HttpContext context)
+        {
+            var imageUrls = new List<Image>();
+            var scriptPaths = UrlUtil.GetScriptFilePaths(document);
+            if (scriptPaths == null || !scriptPaths.Any()) return imageUrls;
+
+            foreach (var path in scriptPaths)
+            {
+                var imageReferences = ImageUtil.GetImagesFromScriptFile(path, context);
+                if (imageReferences == null || !imageReferences.Any())
+                    continue;
+                imageUrls.AddRange(imageReferences.Select(i => new Image
+                {
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
+                    Alt = i.Alt
+                }));
+            }
+
+            return imageUrls;
+        }
+
+        public static IEnumerable<Image> GetImagesFromInlineJs(HtmlDocument document, string url)
+        {
+            var imageUrls = new List<Image>();
+            var inlineScripts = document.DocumentNode.SelectNodes("//script");
+            if (inlineScripts == null || !inlineScripts.Any()) return imageUrls;
+
+            foreach (var inlineScript in inlineScripts)
+            {
+                var styleContent = inlineScript.InnerText;
+                var regex = Settings.Default.ImageRegexPatternForJs;
+                var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
+                if (imageReferences == null || !imageReferences.Any())
+                    continue;
+                imageUrls.AddRange(imageReferences.Select(i => new Image
+                {
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
+                    Alt = i.Alt
+                }));
+            }
+
+            return imageUrls;
+        }
+
         public static IEnumerable<Image> GetImagesFromCssFile(string filePath, HttpContext context)
         {
             if (String.IsNullOrWhiteSpace(filePath) || context == null) return null;
@@ -36,7 +139,7 @@ namespace URL_Parser.Utility
                 .Select(r => new Image
                 {
                     Src = r,
-                    Alt = "Styling image"
+                    Alt = Settings.Default.DefaultAltForImageFromCssFiles
                 });
         }
 
@@ -65,7 +168,7 @@ namespace URL_Parser.Utility
                 .Select(r => new Image
                 {
                     Src = r,
-                    Alt = "Script image"
+                    Alt = Settings.Default.DefaultAltForImageFromJsFiles
                 });
         }
 
@@ -86,7 +189,7 @@ namespace URL_Parser.Utility
                 .Select(r => new Image
                 {
                     Src = r,
-                    Alt = "Inline image"
+                    Alt = Settings.Default.DefaultAltForImageFromInlineCode
                 });
         }
     }

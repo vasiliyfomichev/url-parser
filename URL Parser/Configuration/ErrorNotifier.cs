@@ -18,10 +18,10 @@ namespace URL_Parser.Configuration
             {
                 var mail = new MailMessage {From = new MailAddress(Settings.Default.NoReplyEmail)};
                 mail.To.Add(Settings.Default.SupportEmail);
-                mail.Subject = "[URL Parser] Unhandled exception in application.";
+                mail.Subject = Resources.ErrorNotifiedEmailSubject;
                 mail.IsBodyHtml = true;
                 mail.Body = error;
-                var smtpServer = new SmtpClient("smtp.gmail.com")
+                var smtpServer = new SmtpClient(Settings.Default.SMTPServer)
                 {
                     Port = Settings.Default.SMTPPort,
                     UseDefaultCredentials = false,
@@ -34,7 +34,7 @@ namespace URL_Parser.Configuration
             catch (Exception ex)
             {
                 var logger = LogManager.GetLogger(typeof(MvcApplication));
-                logger.Fatal("Unable to sent unhandled exception notification email.", ex);
+                logger.Fatal(Resources.UnableToSendEmailError, ex);
             }
         }
     }

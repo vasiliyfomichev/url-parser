@@ -2,16 +2,19 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI.WebControls.Expressions;
 using HtmlAgilityPack;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
 using URL_Parser.Properties;
 using URL_Parser.Utility;
+using WebGrease.Css.Ast;
 
 #endregion
 
@@ -21,17 +24,17 @@ namespace URL_Parser.Providers
     {
         #region IUrlService Members
 
-        public Task<IEnumerable<WordReportItem>> GetWordReportAsync(string url, int maxReportSize)
+        public IEnumerable<WordReportItem> GetWordReport(string url, int maxReportSize)
         {
-            var task = Task.Run(() => ParseWords(url, maxReportSize));
-            return task;
+            var words = ParseWords(url, maxReportSize);
+            return words;
         }
 
-        public Task<IEnumerable<Image>> GetImagesAsync(string url, HttpContext context)
+        public IEnumerable<Image> GetImages(string url, HttpContext context)
         {
             if (context == null) return null;
-            var task = Task.Run(() => ParseImages(url, context));
-            return task;
+            var images = ParseImages(url, context);
+            return images;
         }
 
         #endregion
@@ -40,99 +43,67 @@ namespace URL_Parser.Providers
 
         private static IEnumerable<Image> ParseImages(string url, HttpContext context)
         {
-                var document = new HtmlWeb().Load(url);
-                var imageUrls = document.DocumentNode.Descendants("img")
-                    .Select(e =>
-                        new Image
-                        {
-                            Src = UrlUtil.EnsureAbsoluteUrl(e.GetAttributeValue("src", null), url),
-                            Alt = e.GetAttributeValue("alt", null)
-                        })
-                    .Where(s => !string.IsNullOrEmpty(s.Src))
-                    .ToList();
-
-                var urlsFromHead = UrlUtil.GetMetaImageUrls(document);
-                imageUrls.AddRange(urlsFromHead);
-
-            // parsing css
-            // Referenced CCS
-            var cssPaths = UrlUtil.GetCssFilePaths(document);
-            if (cssPaths != null)
+            var document = new HtmlWeb().Load(url);
+            var imageUrls = new List<Image>();
+            Task.WaitAll(new[]
             {
-                foreach (var path in cssPaths)
-                {
-                    var imageReferences = ImageUtil.GetImagesFromCssFile(path, context);
-                    if (imageReferences == null || !imageReferences.Any())
-                        continue;
-                    imageUrls.AddRange(imageReferences.Select(i => new Image
-                    {
-                        Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
-                        Alt = i.Alt
-                    }));
-                }
-            }
+                Task.Run(() => imageUrls.AddRange(UrlUtil.GetMetaImageUrls(document))),
+                Task.Run(() => imageUrls.AddRange(ImageUtil.GetImagesFromImageTags(document, url))),
+                Task.Run(() => imageUrls.AddRange(ImageUtil.GetImagesFromReferencedCss(document, url, context))),
+                Task.Run(() => imageUrls.AddRange(ImageUtil.GetImagesFromInlineCss(document, url))),
+                Task.Run(() => imageUrls.AddRange(ImageUtil.GetImagesFromReferencedJs(document, url, context))),
+                Task.Run(() => imageUrls.AddRange(ImageUtil.GetImagesFromInlineJs(document, url)))
+            });
 
-            // Inline CCS
-            var inlineStyles = document.DocumentNode.SelectNodes("//style");
-            if (inlineStyles != null)
-            {
-                foreach (var inlineStyle in inlineStyles)
-                {
-                    var styleContent = inlineStyle.InnerText;
-                    var regex = Settings.Default.ImageRegexPatternForCss;
-                    var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
-                    if (imageReferences == null || !imageReferences.Any())
-                        continue;
-                    imageUrls.AddRange(imageReferences.Select(i => new Image
-                    {
-                        Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
-                        Alt = i.Alt
-                    }));
-                }
-            }
-
-            // Referenced JS
-            var scriptPaths = UrlUtil.GetScriptFilePaths(document);
-            if (scriptPaths != null)
-            {
-                foreach (var path in scriptPaths)
-                {
-                    var imageReferences = ImageUtil.GetImagesFromScriptFile(path, context);
-                    if (imageReferences == null || !imageReferences.Any())
-                        continue;
-                    imageUrls.AddRange(imageReferences.Select(i => new Image
-                    {
-                        Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
-                        Alt = i.Alt
-                    }));
-                }
-            }
-
-            // Inline JS
-            var inlineScripts = document.DocumentNode.SelectNodes("//script");
-            if (inlineScripts != null)
-            {
-                foreach (var inlineScript in inlineScripts)
-                {
-                    var styleContent = inlineScript.InnerText;
-                    var regex = Settings.Default.ImageRegexPatternForJs;
-                    var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
-                    if (imageReferences == null || !imageReferences.Any())
-                        continue;
-                    imageUrls.AddRange(imageReferences.Select(i => new Image
-                    {
-                        Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
-                        Alt = i.Alt
-                    }));
-                }
-            }
             return imageUrls;
         }
 
         private static IEnumerable<WordReportItem> ParseWords(string url, int maxReportSize)
         {
             var document = new HtmlWeb().Load(url);
+            document = CleanupDocument(document);
 
+            var htmlContentElements = document.DocumentNode.SelectSingleNode("//body")
+                .DescendantsAndSelf()
+                .ToList();
+
+            var htmlTagsWithText = string.Join(" ", htmlContentElements
+                .Where(n => !n.HasChildNodes && !string.IsNullOrWhiteSpace(n.InnerText))
+                .Select(n => n.InnerText).ToList());
+
+
+            var wordString = CleanupString(htmlTagsWithText);
+            var specialCharacters = Settings.Default.SpecialCharacters;
+            specialCharacters.Add(" "); // Adding mandatory space to split by
+            var charArrayToSplitBy = string.Join(string.Empty, specialCharacters.Cast<string>().ToArray()).ToCharArray();
+            var wordArray = wordString.Split(charArrayToSplitBy, StringSplitOptions.RemoveEmptyEntries);
+            var rankings = wordArray.GroupBy(i => i.ToLower()).Select(g =>
+                new WordReportItem {Word = g.Key, Count = g.Count()}
+                );
+
+            rankings = rankings.OrderByDescending(w => w.Count).ThenBy(w => w.Word);
+            var cleanRankings = rankings.Where(ranking => !Settings.Default.StopWords.Contains(ranking.Word)).ToList();
+
+            if (cleanRankings.Count() > maxReportSize)
+                cleanRankings = cleanRankings.Take(maxReportSize).ToList();
+
+            return cleanRankings;
+        }
+
+        #region Helpers
+
+        private static string CleanupString(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return null;
+            text = Regex.Replace(text, Settings.Default.NewLineRegex, string.Empty).Trim();
+            text = HttpUtility.HtmlDecode(text);
+            text = Regex.Replace(text, @"[^\u0000-\u007F]", string.Empty);
+            text = Regex.Replace(text, @"[\d-]", string.Empty);
+            return text;
+        }
+
+        private static HtmlDocument CleanupDocument(HtmlDocument document)
+        {
             foreach (var script in document.DocumentNode.Descendants("script").ToArray())
                 script.Remove();
             foreach (var style in document.DocumentNode.Descendants("style").ToArray())
@@ -142,39 +113,13 @@ namespace URL_Parser.Providers
             {
                 comment.ParentNode.RemoveChild(comment);
             }
-            var htmlElements = document.DocumentNode.SelectSingleNode("//body")
-                .DescendantsAndSelf()
-                .ToList();
 
-            var words = new StringBuilder();
-
-            var htmlTagsWithText =
-                htmlElements.OfType<HtmlTextNode>().Where(text => !string.IsNullOrWhiteSpace(text.Text));
-            Parallel.ForEach(htmlTagsWithText, (htmlTagWithText) => words.Append(StripNewLines(htmlTagWithText.Text) + " "));
-
-            var wordString = words.ToString();
-            var source = wordString.Split(new[] { '.', '?', '!', ' ', ';', ':', ',' },
-                StringSplitOptions.RemoveEmptyEntries);
-            var rankings = source.GroupBy(i => i).Select(g =>
-                new WordReportItem { Word = g.Key, Count = g.Count() }
-            );
-
-            rankings = rankings.OrderByDescending(w => w.Count);
-            var cleanRankings = rankings.Where(ranking => !Settings.Default.StopWords.Contains(ranking.Word)).ToList();
-
-            if (cleanRankings.Count() > maxReportSize)
-                cleanRankings = cleanRankings.Take(maxReportSize).ToList();
-
-            return cleanRankings;
+            return document;
         }
 
-        private static string StripNewLines(string text)
-        {
-            return string.IsNullOrEmpty(text) ? null : Regex.Replace(text, @"\t|\n|\r", string.Empty).Trim();
-        }
-        
         #endregion
 
+        #endregion
     }
 }
 

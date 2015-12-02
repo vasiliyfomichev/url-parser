@@ -9,6 +9,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using log4net;
 using URL_Parser.Configuration;
+using URL_Parser.Properties;
 
 #endregion
 
@@ -25,24 +26,24 @@ namespace URL_Parser
         public void Application_Start()
         {
             log4net.Config.XmlConfigurator.Configure();
-            Logger.Info("Starting URL Parser Application.");
+            Logger.Info(Resources.ApplicationStartupMessage);
+
             AutofacConfig.ConfigureContainer();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
-
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
 
         public void Application_End()
         {
-            Logger.Info("URL Parser application is shutting down.");
+            Logger.Info(Resources.ApplicationShutdownMessage);
         }
 
         void Application_Error(object sender, EventArgs e)
         {
             var ex = Server.GetLastError();
-            Logger.Error("Unhandled error in URL Parser.", ex);
+            Logger.Error(Resources.UnhandledExceptionError, ex);
             var httpUnhandledException = new HttpUnhandledException(Server.GetLastError().Message, Server.GetLastError());
             ErrorNotifier.EmailError(httpUnhandledException.GetHtmlErrorMessage());
             Server.ClearError();

@@ -333,10 +333,47 @@
   &lt;string&gt;yours&lt;/string&gt;
   &lt;string&gt;yourself&lt;/string&gt;
   &lt;string&gt;yourselves&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="NoReplyEmail" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">no.reply.urlparser@gmail.com</Value>
+    </Setting>
+    <Setting Name="SupportEmail" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">vasya.fomichev@gmail.com</Value>
+    </Setting>
+    <Setting Name="SMTPServer" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">smtp.gmail.com</Value>
+    </Setting>
+    <Setting Name="SMTPPort" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">587</Value>
+    </Setting>
+    <Setting Name="SSLEnabled" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="NoReplyPassword" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">SitecoreR0ck$!</Value>
+    </Setting>
+    <Setting Name="DefaultAltForImageFromCssFiles" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Styling image</Value>
+    </Setting>
+    <Setting Name="DefaultAltForImageFromInlineCode" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Inline image</Value>
+    </Setting>
+    <Setting Name="DefaultAltForImageFromJsFiles" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Script image</Value>
+    </Setting>
+    <Setting Name="IsImageUrlRegex" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">^.*\.(jpg|gif|jpeg|png|ico)$</Value>
+    </Setting>
+    <Setting Name="NewLineRegex" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">\t|\n|\r</Value>
+    </Setting>
+    <Setting Name="SpecialCharacters" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
   &lt;string&gt;-&lt;/string&gt;
   &lt;string&gt;+&lt;/string&gt;
   &lt;string&gt;=&lt;/string&gt;
-  &lt;string&gt;/&lt;/string&gt;
   &lt;string&gt;?&lt;/string&gt;
   &lt;string&gt;.&lt;/string&gt;
   &lt;string&gt;,&lt;/string&gt;
@@ -356,25 +393,13 @@
   &lt;string&gt;}&lt;/string&gt;
   &lt;string&gt;~&lt;/string&gt;
   &lt;string&gt;`&lt;/string&gt;
+  &lt;string&gt;|&lt;/string&gt;
+  &lt;string&gt;\&lt;/string&gt;
+  &lt;string&gt;/&lt;/string&gt;
+  &lt;string&gt;&amp;gt;&lt;/string&gt;
+  &lt;string&gt;&amp;lt;&lt;/string&gt;
+  &lt;string /&gt;
 &lt;/ArrayOfString&gt;</Value>
-    </Setting>
-    <Setting Name="NoReplyEmail" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">no.reply.urlparser@gmail.com</Value>
-    </Setting>
-    <Setting Name="SupportEmail" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">vasya.fomichev@gmail.com</Value>
-    </Setting>
-    <Setting Name="SMTPServer" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">mail.gmail.com</Value>
-    </Setting>
-    <Setting Name="SMTPPort" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">587</Value>
-    </Setting>
-    <Setting Name="SSLEnabled" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="NoReplyPassword" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">SitecoreR0ck$!</Value>
     </Setting>
   </Settings>
 </SettingsFile>

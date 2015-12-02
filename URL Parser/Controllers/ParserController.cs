@@ -40,18 +40,18 @@ namespace URL_Parser.Controllers
         #endregion
 
         [System.Web.Http.HttpGet, OutputCache(CacheProfile = "CacheClient1hr")]
-        public async Task<IHttpActionResult> Images(string url)
+        public IHttpActionResult Images(string url)
         {
-            _logger.Debug(string.Format("Received image parsing request for {0}.", url));
-            var images = await _service.GetImagesAsync(url, HttpContext.Current);
+            _logger.Debug(string.Format(Resources.ReceivedParcingRequestMessageForImages, url));
+            var images = _service.GetImages(url, HttpContext.Current);
             return Ok(images);
         }
 
         [System.Web.Http.HttpGet, OutputCache(CacheProfile = "CacheClient1hr")]
-        public async Task<IHttpActionResult> WordReport(string url, int maxReportSize = 20)
+        public IHttpActionResult WordReport(string url, int maxReportSize = 20)
         {
-            _logger.Debug(string.Format("Received word parsing request for {0} URL with a {1} limit.", url, maxReportSize));
-            var words = await _service.GetWordReportAsync(url, maxReportSize);
+            _logger.Debug(string.Format(Resources.ReceivedParcingRequestMessageForWords, url, maxReportSize));
+            var words = _service.GetWordReport(url, maxReportSize);
             return Ok(words);
         }
     }

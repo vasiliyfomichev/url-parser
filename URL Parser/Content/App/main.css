@@ -16,23 +16,25 @@ section.url-input {
   margin: 0 auto;
   transition-property: top;
   transition-duration: 1s;
-  -webkit-transition-property: top;
+  -webkit-transition-property: top, font-size;
   /* Safari */
-  -webkit-transition-duration: 1s;
+  -webkit-transition-duration: 1s, font-size;
   /* Safari */
   width: 100%;
   z-index: 1000; }
   section.url-input.set {
-    top: 3%; }
+    top: 3%;
+    font-size: 0.6em; }
   section.url-input .error {
     padding: 10px; }
     section.url-input .error span {
       color: red; }
   section.url-input input[type=url] {
+    width: 70%;
     background: #fff;
     border: none;
     border-bottom: 1px solid #000000;
-    font-size: 70px;
+    font-size: 7em;
     text-align: center;
     white-space: nowrap;
     overflow: hidden !important;

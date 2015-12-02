@@ -4,6 +4,7 @@ using log4net;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http.Filters;
+using URL_Parser.Properties;
 
 namespace URL_Parser.Configuration.Filters
 {
@@ -17,8 +18,8 @@ namespace URL_Parser.Configuration.Filters
 
         public override void OnException(HttpActionExecutedContext context)
         {
-            Logger.Error("Unhandled exception in Web API component of URL Parser.", context.Exception);
-            if (context.Exception is WebException)
+            Logger.Error(Resources.UnhandledExceptionError, context.Exception);
+            if (context.Exception is WebException || context.Exception is HttpRequestException)
             {
                 context.Response =
                     new HttpResponseMessage(HttpStatusCode.NotFound);

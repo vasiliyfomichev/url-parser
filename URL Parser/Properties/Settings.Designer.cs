@@ -157,14 +157,7 @@ namespace URL_Parser.Properties {
             "  <string>will</string>\r\n  <string>with</string>\r\n  <string>within</string>\r\n  <" +
             "string>without</string>\r\n  <string>would</string>\r\n  <string>yet</string>\r\n  <st" +
             "ring>you</string>\r\n  <string>your</string>\r\n  <string>yours</string>\r\n  <string>" +
-            "yourself</string>\r\n  <string>yourselves</string>\r\n  <string>-</string>\r\n  <strin" +
-            "g>+</string>\r\n  <string>=</string>\r\n  <string>/</string>\r\n  <string>?</string>\r\n" +
-            "  <string>.</string>\r\n  <string>,</string>\r\n  <string>!</string>\r\n  <string>@</s" +
-            "tring>\r\n  <string>#</string>\r\n  <string>$</string>\r\n  <string>%</string>\r\n  <str" +
-            "ing>^</string>\r\n  <string>&amp;</string>\r\n  <string>*</string>\r\n  <string>(</str" +
-            "ing>\r\n  <string>)</string>\r\n  <string>[</string>\r\n  <string>]</string>\r\n  <strin" +
-            "g>{</string>\r\n  <string>}</string>\r\n  <string>~</string>\r\n  <string>`</string>\r\n" +
-            "</ArrayOfString>")]
+            "yourself</string>\r\n  <string>yourselves</string>\r\n</ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection StopWords {
             get {
                 return ((global::System.Collections.Specialized.StringCollection)(this["StopWords"]));
@@ -191,7 +184,7 @@ namespace URL_Parser.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("mail.gmail.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("smtp.gmail.com")]
         public string SMTPServer {
             get {
                 return ((string)(this["SMTPServer"]));
@@ -222,6 +215,90 @@ namespace URL_Parser.Properties {
         public string NoReplyPassword {
             get {
                 return ((string)(this["NoReplyPassword"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Styling image")]
+        public string DefaultAltForImageFromCssFiles {
+            get {
+                return ((string)(this["DefaultAltForImageFromCssFiles"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Inline image")]
+        public string DefaultAltForImageFromInlineCode {
+            get {
+                return ((string)(this["DefaultAltForImageFromInlineCode"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Script image")]
+        public string DefaultAltForImageFromJsFiles {
+            get {
+                return ((string)(this["DefaultAltForImageFromJsFiles"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("^.*\\.(jpg|gif|jpeg|png|ico)$")]
+        public string IsImageUrlRegex {
+            get {
+                return ((string)(this["IsImageUrlRegex"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\t|\\n|\\r")]
+        public string NewLineRegex {
+            get {
+                return ((string)(this["NewLineRegex"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>-</string>
+  <string>+</string>
+  <string>=</string>
+  <string>?</string>
+  <string>.</string>
+  <string>,</string>
+  <string>!</string>
+  <string>@</string>
+  <string>#</string>
+  <string>$</string>
+  <string>%</string>
+  <string>^</string>
+  <string>&amp;</string>
+  <string>*</string>
+  <string>(</string>
+  <string>)</string>
+  <string>[</string>
+  <string>]</string>
+  <string>{</string>
+  <string>}</string>
+  <string>~</string>
+  <string>`</string>
+  <string>|</string>
+  <string>\</string>
+  <string>/</string>
+  <string>&gt;</string>
+  <string>&lt;</string>
+  <string />
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection SpecialCharacters {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["SpecialCharacters"]));
             }
         }
     }
