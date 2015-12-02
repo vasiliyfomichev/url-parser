@@ -11,12 +11,7 @@
                     <input type="url" pattern="https?://.+" id="url" placeholder="enter url and hit enter" required ng-model="url" />
                 </div>
                 <div class="error" ng-class="{'hidden':!hasErrors()}">
-                    <ul>
-                        <li ng-repeat="error in errors">
-                            <span>{{error}}</span>
-                        </li>
-                    </ul>
-                    <span>A team of trained monkeys has been dispatched to troubleshoot. Please try a different URL.</span>
+                    <p ng-bind-html="errorSummary"></p>
                 </div>
             </form>
         </section>

@@ -25,23 +25,23 @@
     display: block;
     top: 50%;
     margin-top: -35px;
-    width: 36px;
-    height: 71px;
+    width: 56px;
+    height: 91px;
     outline: none;
     cursor: pointer;
-    background: url(../../assets/images/blank.gif) no-repeat;
+    background: #555 url(../../assets/images/blank.gif) no-repeat center;
 }
 
 .arrow.prev {
-    opacity: 0.2;
-    left: 20px;
+    opacity: 0.6;
+    left: 0px;
     background-image: url(../../assets/images/paddle_prev_999.png);
     transition: 0.2s linear all;
 }
 
 .arrow.next {
-    opacity: 0.2;
-    right: 20px;
+    opacity: 0.6;
+    right: 0px;
     background-image: url(../../assets/images/paddle_next_999.png);
     transition: 0.2s linear all;
 }

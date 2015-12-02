@@ -1,4 +1,4 @@
-﻿angular.module('UrlParser', ['tc.chartjs', 'ngAnimate', 'ngTouch'])
+﻿angular.module('UrlParser', ['tc.chartjs', 'ngAnimate', 'ngTouch', 'ngSanitize'])
     .controller('UrlController', function($scope, $http) {
         $scope.valid = true;
         $scope.url = null;
@@ -65,6 +65,30 @@
             barDatasetSpacing: 1
         };
 
+        $scope.errorSummary = null;
+        function createErrorSummary() {
+            $scope.errorSummary = null;
+            var errors = $scope.errors;
+            if (errors.length === 0) return "";
+            var errorMessage = "<ul>";
+            var is404Found = false;
+            for (var i = 0; i < errors.length; i++) {
+                if (errors[i].code !== 404) {
+                    errorMessage += "<li><span>" + errors[i].message + "</span></li>";
+                } else {
+                    if (!is404Found) errorMessage += "<li><span>" + errors[i].message + "</span></li>";
+                }
+                if (errors[i].code === 404 && !is404Found) is404Found = true;
+            }
+            errorMessage += "</ul>";
+            if (is404Found) {
+                errorMessage += "<span>Please try another URL.</span>";
+            } else {
+                errorMessage += "<span>Oops... something went wrong. A team of trained monkeys has been dispatched to troubleshoot. Please try a different URL.</span>";
+            }
+            $scope.errorSummary = errorMessage;
+        }
+
         $scope.hasErrors = function() {
             return $scope.errors.length > 0;
         }
@@ -113,7 +137,6 @@
             $scope.isDataLoaded = false;
             $scope.loadStarted = true;
             resetChart();
-            $scope.title = "loading reports...";
             loadImages(url);
             loadWordReport(url, $scope.maxReportSize);
         }
@@ -124,15 +147,22 @@
         };
 
         function loadImages(url) {
+            $scope.images = [];
             $scope.working.images = true;
-            $http.get("/api/parser/images?url=" + url).success(function(data, status, headers, config) {
+            $http.get("/api/parser/images?url=" + url, { cache: true }).success(function (data, status, headers, config) {
                 $scope.images = data;
-                
                 $scope.loaded.images = true;
                 $scope.working.images = false;
                 completeDataLoad();
             }).error(function (data, status, headers, config) {
-                $scope.errors.push("Problems loading website images.");
+                if (status === 404) {
+                    $scope.errors.push({ code: 404, message: "Unable to parse the URL. It is likely that it does not exist." });
+                } else {
+                    $scope.errors.push({
+                        code: 500,
+                        message: "Problems loading website images."
+                    });
+                }
                 $scope.working.words = false;
                 $scope.loaded.images = true;
                 completeDataLoad();
@@ -146,7 +176,7 @@
 
         function loadWordReport(url, maxReportSize) {
             $scope.working.words = true;
-            $http.get("/api/parser/wordreport?url=" + url + "&maxReportSize=" + maxReportSize).success(function(data, status, headers, config) {
+            $http.get("/api/parser/wordreport?url=" + url + "&maxReportSize=" + maxReportSize, { cache: true }).success(function (data, status, headers, config) {
                 if (typeof data !== 'undefined' && data != null) {
                     for (var i = 0; i < data.length; i++) {
                         $scope.chartData.labels.push(data[i].Word.toLowerCase());
@@ -159,7 +189,14 @@
                 $scope.working.words = false;
                 completeDataLoad();
             }).error(function(data, status, headers, config) {
-                $scope.errors.push("Problems loading the word report.");
+                if (status === 404) {
+                    $scope.errors.push({ code: 404, message: "Unable to parse the URL. It is likely that it does not exist." });
+                } else {
+                    $scope.errors.push({
+                        code: 500,
+                        message: "Problems loading the word report."
+                    });
+                }
                 $scope.working.words = false;
                 $scope.loaded.words = true;
                 completeDataLoad();
@@ -172,6 +209,7 @@
             }
             if ($scope.loaded.images && $scope.loaded.words) {
                 $scope.isDataLoaded = true;
+                createErrorSummary();
             }
         }
     })

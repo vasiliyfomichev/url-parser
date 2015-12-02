@@ -1,16 +1,20 @@
 ﻿#region
 
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.UI;
 using log4net;
 using log4net.Core;
 using URL_Parser.Configuration.Filters;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
 using System;
+using URL_Parser.Properties;
 
 #endregion
 
@@ -35,7 +39,7 @@ namespace URL_Parser.Controllers
 
         #endregion
 
-        [HttpGet]
+        [System.Web.Http.HttpGet, OutputCache(CacheProfile = "CacheClient1hr")]
         public async Task<IHttpActionResult> Images(string url)
         {
             _logger.Debug(string.Format("Received image parsing request for {0}.", url));
@@ -43,7 +47,7 @@ namespace URL_Parser.Controllers
             return Ok(images);
         }
 
-        [HttpGet]
+        [System.Web.Http.HttpGet, OutputCache(CacheProfile = "CacheClient1hr")]
         public async Task<IHttpActionResult> WordReport(string url, int maxReportSize = 20)
         {
             _logger.Debug(string.Format("Received word parsing request for {0} URL with a {1} limit.", url, maxReportSize));

@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using System.Web.Mvc;
 using log4net;
 using System.Net;
 using System.Net.Http;
@@ -17,10 +18,18 @@ namespace URL_Parser.Configuration.Filters
         public override void OnException(HttpActionExecutedContext context)
         {
             Logger.Error("Unhandled exception in Web API component of URL Parser.", context.Exception);
-            context.Response =
-                new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
-            var httpUnhandledException = new HttpUnhandledException(context.Exception.Message, context.Exception);
-            ErrorNotifier.EmailError(httpUnhandledException.GetHtmlErrorMessage());
+            if (context.Exception is WebException)
+            {
+                context.Response =
+                    new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+            else
+            {
+                context.Response =
+                    new HttpResponseMessage(HttpStatusCode.ServiceUnavailable);
+                var httpUnhandledException = new HttpUnhandledException(context.Exception.Message, context.Exception);
+                ErrorNotifier.EmailError(httpUnhandledException.GetHtmlErrorMessage());
+            }
         }
     }
 }
