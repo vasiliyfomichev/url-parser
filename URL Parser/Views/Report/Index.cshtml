@@ -16,10 +16,6 @@
             </form>
         </section>
         <div class="reports">
-            <section class="container chart">
-                <h2 ng-class="{'hidden':!showWordReport()}">{{maxReportSize}} most used words</h2>
-                <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions" ng-class="{'hidden':!showWordReport()}"></canvas>
-            </section>
             <section class="container" ng-class="{'hidden':!showSlideshow()}">
                 <h2>website images</h2>
                 <div class="slider">
@@ -38,6 +34,10 @@
                         </div>
                     </nav>
                 </div>
+            </section>
+            <section class="container chart">
+                <h2 ng-class="{'hidden':!showWordReport()}">{{maxReportSize}} most used words</h2>
+                <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions" ng-class="{'hidden':!showWordReport()}"></canvas>
             </section>
         </div>
     </div>
