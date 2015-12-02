@@ -10,7 +10,7 @@ namespace URL_Parser
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/scripts")
+            bundles.Add(new ScriptBundle("~/js")
                 .Include("~/scripts/chart.min.js",
                 "~/scripts/jquery-2.1.4.min.js", 
                          "~/Scripts/angular.min.js",

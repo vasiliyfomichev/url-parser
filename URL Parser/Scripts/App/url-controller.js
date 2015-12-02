@@ -1,5 +1,5 @@
 ﻿angular.module('UrlParser', ['tc.chartjs', 'ngAnimate', 'ngTouch', 'ngSanitize'])
-    .controller('UrlController', function($scope, $http) {
+    .controller('UrlController', ["$scope", "$http",function($scope, $http) {
         $scope.valid = true;
         $scope.url = null;
         $scope.title = null;
@@ -212,7 +212,7 @@
                 createErrorSummary();
             }
         }
-    })
+    }])
     .animation('.slide-animation', function() {
         return {
             addClass: function(element, className, done) {
