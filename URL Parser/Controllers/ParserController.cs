@@ -1,19 +1,10 @@
 ﻿#region
 
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.UI;
 using log4net;
-using log4net.Core;
-using URL_Parser.Configuration.Filters;
 using URL_Parser.Contracts;
-using URL_Parser.Models;
-using System;
 using URL_Parser.Properties;
 
 #endregion

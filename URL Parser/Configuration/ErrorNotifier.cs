@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Net.Mail;
-using System.Web;
 using log4net;
 using URL_Parser.Properties;
-using WebGrease.Activities;
+
+#endregion
 
 namespace URL_Parser.Configuration
 {

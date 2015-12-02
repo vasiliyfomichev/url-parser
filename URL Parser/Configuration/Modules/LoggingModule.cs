@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿#region
+
+using System.Linq;
 using Autofac.Core;
 using log4net;
+
+#endregion
 
 namespace URL_Parser.Configuration.Modules
 {

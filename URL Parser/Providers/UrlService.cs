@@ -2,19 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.UI.WebControls.Expressions;
 using HtmlAgilityPack;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
 using URL_Parser.Properties;
 using URL_Parser.Utility;
-using WebGrease.Css.Ast;
 
 #endregion
 

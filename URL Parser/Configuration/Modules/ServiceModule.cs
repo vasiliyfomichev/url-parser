@@ -1,5 +1,9 @@
-﻿using System.Reflection;
+﻿#region
+
+using System.Reflection;
 using Autofac;
+
+#endregion
 
 namespace URL_Parser.Configuration.Modules
 {

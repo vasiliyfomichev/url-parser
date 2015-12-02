@@ -1,10 +1,13 @@
-﻿using System.Web;
-using System.Web.Mvc;
-using log4net;
+﻿#region
+
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http.Filters;
+using log4net;
 using URL_Parser.Properties;
+
+#endregion
 
 namespace URL_Parser.Configuration.Filters
 {
