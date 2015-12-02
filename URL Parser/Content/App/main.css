@@ -15,21 +15,28 @@ section.url-input {
   top: 40%;
   margin: 0 auto;
   transition-property: top;
-  transition-duration: 1s;
-  -webkit-transition-property: top, font-size;
+  transition-duration: 0.8s;
+  -webkit-transition-property: top;
   /* Safari */
-  -webkit-transition-duration: 1s, font-size;
+  -webkit-transition-duration: 0.8s;
   /* Safari */
   width: 100%;
   z-index: 1000; }
   section.url-input.set {
-    top: 3%;
-    font-size: 0.6em; }
+    top: 3%; }
+    section.url-input.set input[type=url] {
+      font-size: 4em; }
   section.url-input .error {
     padding: 10px; }
     section.url-input .error span {
       color: red; }
   section.url-input input[type=url] {
+    transition-property: font-size;
+    transition-duration: 0.8s;
+    -webkit-transition-property: font-size;
+    /* Safari */
+    -webkit-transition-duration: 0.8s;
+    /* Safari */
     width: 70%;
     background: #fff;
     border: none;
