@@ -78,6 +78,7 @@
     <Compile Include="ParserControllerTest.cs" />
     <Compile Include="UrlUtitlityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\URL Parser\URL Parser.csproj">

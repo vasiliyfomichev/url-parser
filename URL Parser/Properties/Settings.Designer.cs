@@ -34,7 +34,7 @@ namespace URL_Parser.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("url\\([\'\"\"](?<bgpath>.*)[\'\\\"\"]\\)")]
+        [global::System.Configuration.DefaultSettingValueAttribute("url\\([\'\"]?(?<url>[^)]+?)[\'\"]?\\)")]
         public string ImageRegexPatternForCss {
             get {
                 return ((string)(this["ImageRegexPatternForCss"]));
@@ -43,7 +43,7 @@ namespace URL_Parser.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("[\'\"\"](?<bgpath>.*)[\'\\\"\"]")]
+        [global::System.Configuration.DefaultSettingValueAttribute("[\'\"]?(?<url>[^)]+?)[\'\"]")]
         public string ImageRegexPatternForJs {
             get {
                 return ((string)(this["ImageRegexPatternForJs"]));

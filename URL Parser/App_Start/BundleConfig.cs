@@ -12,7 +12,6 @@ namespace URL_Parser
         {
             bundles.Add(new ScriptBundle("~/js")
                 .Include("~/scripts/chart.min.js",
-                "~/scripts/jquery-2.1.4.min.js", 
                          "~/Scripts/angular.min.js",
                          "~/Scripts/angular-animate.min.js",
                          "~/scripts/twinmax.min.js",

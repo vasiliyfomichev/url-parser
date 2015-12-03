@@ -72,6 +72,7 @@ namespace URL_Parser.Providers
             var specialCharacters = Settings.Default.SpecialCharacters;
             specialCharacters.Add(" "); // Adding mandatory space to split by
             var charArrayToSplitBy = string.Join(string.Empty, specialCharacters.Cast<string>().ToArray()).ToCharArray();
+            if (string.IsNullOrWhiteSpace(wordString)) return null;
             var wordArray = wordString.Split(charArrayToSplitBy, StringSplitOptions.RemoveEmptyEntries);
             var rankings = wordArray.GroupBy(i => i.ToLower()).Select(g =>
                 new WordReportItem {Word = g.Key, Count = g.Count()}

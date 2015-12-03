@@ -38,7 +38,7 @@ namespace URL_Parser.Utility
             if (cssPaths == null || !cssPaths.Any()) return imageUrls;
             foreach (var path in cssPaths)
             {
-                var imageReferences = ImageUtil.GetImagesFromCssFile(path, context);
+                var imageReferences = GetImagesFromCssFile(path, context);
                 if (imageReferences == null || !imageReferences.Any())
                     continue;
                 imageUrls.AddRange(imageReferences.Select(i => new Image
@@ -81,7 +81,7 @@ namespace URL_Parser.Utility
 
             foreach (var path in scriptPaths)
             {
-                var imageReferences = ImageUtil.GetImagesFromScriptFile(path, context);
+                var imageReferences = GetImagesFromScriptFile(path, context);
                 if (imageReferences == null || !imageReferences.Any())
                     continue;
                 imageUrls.AddRange(imageReferences.Select(i => new Image
@@ -129,13 +129,8 @@ namespace URL_Parser.Utility
             if (String.IsNullOrWhiteSpace(content)) return null;
 
             var matches = Regex.Matches(content, regex, options)
-                .Cast<Match>().Select(m => m.Groups["bgpath"]);
+                .Cast<Match>().Select(m => m.Groups["url"]);
             return matches.Select(m => m.Value)
-                .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("png", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("ico", StringComparison.OrdinalIgnoreCase))
                 .Select(r => new Image
                 {
                     Src = r,
@@ -156,7 +151,7 @@ namespace URL_Parser.Utility
             if (String.IsNullOrWhiteSpace(content)) return null;
 
             var matches = Regex.Matches(content, regex, options)
-                .Cast<Match>().Select(m => m.Groups["bgpath"]);
+                .Cast<Match>().Select(m => m.Groups["url"]);
             return matches.Select(m => m.Value)
                 .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
                             || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
@@ -179,7 +174,7 @@ namespace URL_Parser.Utility
             if (String.IsNullOrWhiteSpace(text)) return null;
 
             var matches = Regex.Matches(text, imageRegex, options)
-                .Cast<Match>().Select(m => m.Groups["bgpath"]);
+                .Cast<Match>().Select(m => m.Groups["url"]);
             return matches.Select(m => m.Value)
                 .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
                             || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
