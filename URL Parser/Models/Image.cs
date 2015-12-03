@@ -1,15 +1,18 @@
 ﻿#region
 
-using System;
+using System.Runtime.Serialization;
 
 #endregion
 
 namespace URL_Parser.Models
 {
-    [Serializable]
+    [DataContract]
     public class Image
     {
+        [DataMember]
         public string Src { get; set; }
+
+        [DataMember]
         public string Alt { get; set; }
     }
 }

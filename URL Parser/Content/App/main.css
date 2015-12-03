@@ -26,7 +26,8 @@ section.url-input {
   -webkit-transition-duration: 0.8s;
   /* Safari */
   width: 100%;
-  z-index: 1000; }
+  z-index: 1000;
+  /* Smartphones (portrait and landscape) ----------- */ }
   section.url-input.set {
     top: 3%; }
     section.url-input.set input[type=url] {
@@ -51,6 +52,23 @@ section.url-input {
     white-space: nowrap;
     overflow: hidden !important;
     text-overflow: ellipsis; }
+  @media only screen and (min-device-width: 320px) and (max-device-width: 480px) {
+    section.url-input input[type=url] {
+      transition-property: font-size;
+      transition-duration: 0.8s;
+      -webkit-transition-property: font-size;
+      /* Safari */
+      -webkit-transition-duration: 0.8s;
+      /* Safari */
+      width: 70%;
+      background: #fff;
+      border: none;
+      border-bottom: 1px solid #000000;
+      font-size: 4em !important;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden !important;
+      text-overflow: ellipsis; } }
   section.url-input button {
     background: #fff;
     border: none;
