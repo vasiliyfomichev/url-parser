@@ -18,8 +18,8 @@
         <div class="reports">
             <section class="container" ng-class="{'hidden':!showSlideshow()}">
                 <h2>website images</h2>
-                <div class="slider">
-                    <img ng-repeat="image in images" ng-src="{{image.Src}}" ng-alt="{{image.Alt}}" ng-hide="!isCurrentSlideIndex($index)" class="slide slide-animation" />
+                <div class="slider" ng-swipe-left="prevSlide()" ng-swipe-right="nextSlide()">
+                    <img ng-repeat="image in images" ng-swipe-left="prevSlide()" ng-swipe-right="nextSlide()" ng-src="{{image.Src}}" ng-alt="{{image.Alt}}" ng-hide="!isCurrentSlideIndex($index)" class="slide slide-animation" />
 
                     <a class="arrow prev" href="#" ng-click="nextSlide()"></a>
                     <a class="arrow next" href="#" ng-click="prevSlide()"></a>
