@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
 using URL_Parser.Models;
@@ -79,17 +80,16 @@ namespace URL_Parser.Utility
             var scriptPaths = UrlUtil.GetScriptFilePaths(document);
             if (scriptPaths == null || !scriptPaths.Any()) return imageUrls;
 
-            foreach (var path in scriptPaths)
+            Parallel.ForEach(scriptPaths, (scriptPath) =>
             {
-                var imageReferences = GetImagesFromScriptFile(path, context);
-                if (imageReferences == null || !imageReferences.Any())
-                    continue;
+                var imageReferences = GetImagesFromScriptFile(scriptPath, context);
+                if (imageReferences == null || !imageReferences.Any()) return;
                 imageUrls.AddRange(imageReferences.Select(i => new Image
                 {
-                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
+                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, scriptPath),
                     Alt = i.Alt
                 }));
-            }
+            });
 
             return imageUrls;
         }
@@ -99,20 +99,19 @@ namespace URL_Parser.Utility
             var imageUrls = new List<Image>();
             var inlineScripts = document.DocumentNode.SelectNodes("//script");
             if (inlineScripts == null || !inlineScripts.Any()) return imageUrls;
-
-            foreach (var inlineScript in inlineScripts)
+            Parallel.ForEach(inlineScripts, (inlineScript) =>
             {
                 var styleContent = inlineScript.InnerText;
                 var regex = Settings.Default.ImageRegexPatternForJs;
-                var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
+                var imageReferences = GetImagesFromText(styleContent, regex);
                 if (imageReferences == null || !imageReferences.Any())
-                    continue;
+                    return;
                 imageUrls.AddRange(imageReferences.Select(i => new Image
                 {
                     Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
                     Alt = i.Alt
                 }));
-            }
+            });
 
             return imageUrls;
         }

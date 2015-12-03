@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.SessionState;
+using URL_Parser.Tests.Properties;
+
+#endregion
 
 namespace URL_Parser.Tests
 {
@@ -14,7 +14,7 @@ namespace URL_Parser.Tests
     {
         public static HttpContext FakeHttpContext()
         {
-            var httpRequest = new HttpRequest(string.Empty, "http://cmsbestpractices.com/", string.Empty);
+            var httpRequest = new HttpRequest(string.Empty, Settings.Default.TestRequestUrl, string.Empty);
             var stringWriter = new StringWriter();
             var httpResponse = new HttpResponse(stringWriter);
             var httpContext = new HttpContext(httpRequest, httpResponse);

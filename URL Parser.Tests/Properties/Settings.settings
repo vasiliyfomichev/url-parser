@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="URL_Parser.Tests.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="EmptyHtmlPagePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://cmsbestpractices.com/UrlParserTests/test1.html</Value>
+    </Setting>
+    <Setting Name="TestHtmlPagePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://cmsbestpractices.com/UrlParserTests/test.html</Value>
+    </Setting>
+    <Setting Name="TestCssFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://cmsbestpractices.com/UrlParserTests/testStyles.css</Value>
+    </Setting>
+    <Setting Name="TestJsFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://cmsbestpractices.com/UrlParserTests/testScripts.js</Value>
+    </Setting>
+    <Setting Name="TestRequestUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://cmsbestpractices.com</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

@@ -1,9 +1,9 @@
 ﻿#region
 
 using System.Linq;
-using System.Net.Mime;
 using HtmlAgilityPack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using URL_Parser.Tests.Properties;
 using URL_Parser.Utility;
 
 #endregion
@@ -16,8 +16,8 @@ namespace URL_Parser.Tests
         [TestMethod, TestCategory("Integration")]
         public void Ensure_GetImagesFromImageTags_Properly_Finds_Images()
         {
-            var document = new HtmlWeb().Load("http://cmsbestpractices.com/UrlParserTests/test.html");
-            var images = ImageUtil.GetImagesFromImageTags(document, "http://cmsbestpractices.com");
+            var document = new HtmlWeb().Load(Settings.Default.TestHtmlPagePath);
+            var images = ImageUtil.GetImagesFromImageTags(document, Settings.Default.TestRequestUrl);
             Assert.AreEqual(1, images.Count()); 
             Assert.AreEqual("https://www.cmsbestpractices.com/wp-content/uploads/2013/12/CMS-Best-Practices-Logo1.png", images.First().Src);
         }
@@ -38,7 +38,7 @@ namespace URL_Parser.Tests
         {
             var document = new HtmlDocument();
             document.LoadHtml("<script>var someVar = document.getElementById(\"test\");var test = \"/some/image.gif\";</script>");
-            var images = ImageUtil.GetImagesFromInlineJs(document, "http://cmsbestpractices.com/");
+            var images = ImageUtil.GetImagesFromInlineJs(document, Settings.Default.TestRequestUrl);
             Assert.AreEqual(1, images.Count());
             Assert.AreEqual("http://cmsbestpractices.com/some/image.gif", images.First().Src);
         }
@@ -46,14 +46,14 @@ namespace URL_Parser.Tests
         [TestMethod, TestCategory("Integration")]
         public void Ensure_GetImagesFromScriptFile_Properly_Finds_Images_In_Referenced_Script_File()
         {
-            var images = ImageUtil.GetImagesFromScriptFile("http://cmsbestpractices.com/UrlParserTests/testScripts.js", Util.FakeHttpContext());
+            var images = ImageUtil.GetImagesFromScriptFile(Settings.Default.TestJsFilePath, Util.FakeHttpContext());
             Assert.AreEqual(1, images.Count());
         }
 
         [TestMethod, TestCategory("Integration")]
         public void Ensure_GetImagesFromCssFile_Properly_Finds_Images_In_Referenced_Style_File()
         {
-            var images = ImageUtil.GetImagesFromCssFile("http://cmsbestpractices.com/UrlParserTests/testStyles.css", Util.FakeHttpContext());
+            var images = ImageUtil.GetImagesFromCssFile(Settings.Default.TestCssFilePath, Util.FakeHttpContext());
             Assert.AreEqual(2, images.Count());
         }
     }
