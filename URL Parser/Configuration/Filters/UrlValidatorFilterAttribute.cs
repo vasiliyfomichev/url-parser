@@ -10,6 +10,9 @@ using URL_Parser.Utility;
 
 namespace URL_Parser.Configuration.Filters
 {
+    /// <summary>
+    /// Validates the URL passed in for parsing.
+    /// </summary>
     public class UrlValidatorFilterAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)

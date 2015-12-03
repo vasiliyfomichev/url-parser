@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
@@ -22,14 +21,14 @@ namespace URL_Parser.Providers
 
         public IEnumerable<WordReportItem> GetWordReport(string url, int maxReportSize)
         {
-            var words = ParseWords(url, maxReportSize);
+            var words = GetWords(url, maxReportSize);
             return words;
         }
 
         public IEnumerable<Image> GetImages(string url, HttpContext context)
         {
             if (context == null) return null;
-            var images = ParseImages(url, context);
+            var images = GetAllImageReferences(url, context);
             return images;
         }
 
@@ -37,7 +36,7 @@ namespace URL_Parser.Providers
 
         #region Private Methods
 
-        private static IEnumerable<Image> ParseImages(string url, HttpContext context)
+        private static IEnumerable<Image> GetAllImageReferences(string url, HttpContext context)
         {
             var document = new HtmlWeb().Load(url);
             var imageUrls = new List<Image>();
@@ -54,10 +53,10 @@ namespace URL_Parser.Providers
             return imageUrls;
         }
 
-        private static IEnumerable<WordReportItem> ParseWords(string url, int maxReportSize)
+        private static IEnumerable<WordReportItem> GetWords(string url, int maxReportSize)
         {
             var document = new HtmlWeb().Load(url);
-            document = CleanupDocument(document);
+            document = HtmlUtil.CleanupDocument(document);
 
             var htmlContentElements = document.DocumentNode.SelectSingleNode("//body")
                 .DescendantsAndSelf()
@@ -68,7 +67,7 @@ namespace URL_Parser.Providers
                 .Select(n => n.InnerText).ToList());
 
 
-            var wordString = CleanupString(htmlTagsWithText);
+            var wordString = HtmlUtil.CleanupString(htmlTagsWithText);
             var specialCharacters = Settings.Default.SpecialCharacters;
             specialCharacters.Add(" "); // Adding mandatory space to split by
             var charArrayToSplitBy = string.Join(string.Empty, specialCharacters.Cast<string>().ToArray()).ToCharArray();
@@ -86,35 +85,6 @@ namespace URL_Parser.Providers
 
             return cleanRankings;
         }
-
-        #region Helpers
-
-        private static string CleanupString(string text)
-        {
-            if (string.IsNullOrEmpty(text)) return null;
-            text = Regex.Replace(text, Settings.Default.NewLineRegex, string.Empty).Trim();
-            text = HttpUtility.HtmlDecode(text);
-            text = Regex.Replace(text, @"[^\u0000-\u007F]", string.Empty);
-            text = Regex.Replace(text, @"[\d-]", string.Empty);
-            return text;
-        }
-
-        private static HtmlDocument CleanupDocument(HtmlDocument document)
-        {
-            foreach (var script in document.DocumentNode.Descendants("script").ToArray())
-                script.Remove();
-            foreach (var style in document.DocumentNode.Descendants("style").ToArray())
-                style.Remove();
-
-            foreach (var comment in document.DocumentNode.SelectNodes("//comment()"))
-            {
-                comment.ParentNode.RemoveChild(comment);
-            }
-
-            return document;
-        }
-
-        #endregion
 
         #endregion
     }

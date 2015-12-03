@@ -8,6 +8,11 @@ input:focus {
 .hidden {
   display: none; }
 
+div.reports {
+  top: 13%;
+  position: absolute;
+  width: 100%; }
+
 section.url-input {
   display: block;
   text-align: center;
@@ -238,9 +243,5 @@ NAV
     text-indent: calc(-50% - 5px); }
   100% {
     text-indent: calc(150% - 10px); } }
-div.reports {
-  top: 13%;
-  position: absolute;
-  width: 100%; }
 
 /*# sourceMappingURL=main.css.map */

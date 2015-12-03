@@ -7,9 +7,11 @@ body {
 }
 input:focus {outline: none; }
 .hidden{display:none;}
-
-@import "input";
+div.reports{
+    top:13%;
+    position:absolute;
+    width:100%;
+}
+@import "input"; 
 @import "slideshow";
-@import "word-report";
 @import "loader";
-@import "reports";

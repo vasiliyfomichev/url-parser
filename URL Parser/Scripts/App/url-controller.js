@@ -131,6 +131,7 @@
         };
 
         $scope.parseUrl = function (url) {
+            url = encodeURI(url);
             $scope.errors = [];
             var isValidUrl = validateUrl(url);
             if (!isValidUrl) return;

@@ -11,6 +11,9 @@ using URL_Parser.Properties;
 
 namespace URL_Parser.Configuration.Filters
 {
+    /// <summary>
+    /// Catch all exception handler.
+    /// </summary>
     public class GlobalExceptionFilterAttribute : ExceptionFilterAttribute
     {
         #region Fields

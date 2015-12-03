@@ -141,7 +141,6 @@
     <Content Include="Assets\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Assets\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\App\_loader.scss" />
-    <Content Include="Content\App\_reports.scss" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -203,6 +202,7 @@
     </Compile>
     <Compile Include="Contracts\IUrlService.cs" />
     <Compile Include="Providers\UrlService.cs" />
+    <Compile Include="Utility\HtmlUtil.cs" />
     <Compile Include="Utility\ImageUtil.cs" />
     <Compile Include="Utility\UrlUtil.cs" />
   </ItemGroup>
@@ -216,7 +216,6 @@
     <Content Include="Content\App\main.scss" />
     <Content Include="Content\App\_input.scss" />
     <Content Include="Content\App\_slideshow.scss" />
-    <Content Include="Content\App\_word-report.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -224,9 +223,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

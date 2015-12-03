@@ -30,6 +30,13 @@ namespace URL_Parser.Controllers
 
         #endregion
 
+        /// <summary>
+        /// Retrieves all images from the given URL. The action is 
+        /// recursive and prses the page HTML as well as the referenced
+        /// JS and CSS files.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <returns></returns>
         [System.Web.Http.HttpGet, OutputCache(CacheProfile = "CacheClient1hr")]
         public IHttpActionResult Images(string url)
         {
@@ -38,6 +45,12 @@ namespace URL_Parser.Controllers
             return Ok(images);
         }
 
+        /// <summary>
+        /// Provides a report of the most used words in page content.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <param name="maxReportSize">Maximum size of the report.</param>
+        /// <returns></returns>
         [System.Web.Http.HttpGet, OutputCache(CacheProfile = "CacheClient1hr")]
         public IHttpActionResult WordReport(string url, int maxReportSize = 20)
         {
