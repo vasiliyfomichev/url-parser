@@ -102,6 +102,7 @@ namespace URL_Parser.Utility
             return response.IsSuccessStatusCode;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static string GetUrlContent(string url)
         {
             if (string.IsNullOrWhiteSpace(url) && !UrlExistsAsync(url).GetAwaiter().GetResult())

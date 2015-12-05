@@ -1,7 +1,7 @@
 ﻿angular.module('UrlParser', ['tc.chartjs', 'ngAnimate', 'ngTouch', 'ngSanitize'])
     .controller('UrlController', ["$scope", "$http",function($scope, $http) {
         $scope.valid = true;
-        $scope.url = null;
+        $scope.url = "";
         $scope.title = null;
         $scope.images = [];
         $scope.words = [];
@@ -143,8 +143,20 @@
         }
 
         function validateUrl(url) {
-            if (typeof url === 'undefined' || !url) return false;
-            return $scope.valid = true;
+            if (typeof url === 'undefined' || !url) {
+                $scope.valid = false;
+                return false;
+            }
+
+            var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+            var pattern = new RegExp(expression); 
+            if (!pattern.test(url)) {
+                $scope.valid = false;
+                return false;
+            } else {
+                $scope.valid = true;
+                return true;
+            }
         };
 
         function loadImages(url) {

@@ -1,5 +1,7 @@
 ﻿#region
 
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -45,6 +47,14 @@ namespace URL_Parser.Utility
             }
 
             return document;
+        }
+
+        public static string GetContentOfHtmlTextNodes(IEnumerable<HtmlNode> htmlContentElements)
+        {
+            var content = string.Join(" ", htmlContentElements
+                .Where(n => !n.HasChildNodes && !string.IsNullOrWhiteSpace(n.InnerText))
+                .Select(n => n.InnerText).ToList());
+            return content;
         }
     }
 }

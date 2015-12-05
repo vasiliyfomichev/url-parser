@@ -6,9 +6,17 @@
     <div id="container" ng-controller="UrlController">
         <div class="loader more" ng-show="(loadStarted && !showSlideshow() && errors.length===0)"></div>
         <section class="url-input" ng-class="{'set':loadStarted}">
-            <form autocomplete="off" ng-submit="parseUrl(url)">
+            <form name="urlForm" autocomplete="off" ng-submit="parseUrl(url)" novalidate>
                 <div class="input-container" ng-class="{flip: valid}">
-                    <input type="url" pattern="https?://.+" id="url" placeholder="enter url and hit enter" required ng-model="url" />
+                    <input name="input" type="url" pattern="https?://.+" id="url" placeholder="enter url and hit enter" required ng-model="url" />
+                </div>
+                <div class="error">
+                    <span class="error" ng-show="urlForm.input.$error.required && urlForm.input.$dirty">
+                        Missing URL.
+                    </span>
+                    <span class="error" ng-show="urlForm.input.$error.url && urlForm.input.$dirty">
+                        Please enter a valid URL starting with http://
+                    </span>
                 </div>
                 <div class="error" ng-class="{'hidden':!hasErrors()}">
                     <p ng-bind-html="errorSummary"></p>

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.UI.WebControls;
 using HtmlAgilityPack;
 using log4net;
 using URL_Parser.Contracts;
@@ -69,9 +68,9 @@ namespace URL_Parser.Providers
             });
 
             _logger.DebugFormat(Resources.GetGeneratedImagePathsMessage, 
-                imageUrls!=null ? imageUrls.Count.ToString():"0", 
+                imageUrls.Count, 
                 url,
-                imageUrls != null && imageUrls.Any() ? string.Join(", ", imageUrls.Select(i => i.Src)) : "none");
+                imageUrls.Any() ? string.Join(", ", imageUrls.Select(i => i.Src)) : "none");
             return imageUrls;
         }
 
@@ -84,19 +83,17 @@ namespace URL_Parser.Providers
                 .DescendantsAndSelf()
                 .ToList();
 
-            var htmlTagsWithText = string.Join(" ", htmlContentElements
-                .Where(n => !n.HasChildNodes && !string.IsNullOrWhiteSpace(n.InnerText))
-                .Select(n => n.InnerText).ToList());
+            var text = HtmlUtil.GetContentOfHtmlTextNodes(htmlContentElements);
 
 
-            var wordString = HtmlUtil.CleanupString(htmlTagsWithText);
-            _logger.DebugFormat(Resources.ContentRetrievedMessage, wordString);
+            var cleanText = HtmlUtil.CleanupString(text);
+            _logger.DebugFormat(Resources.ContentRetrievedMessage, cleanText);
             
             var specialCharacters = Settings.Default.SpecialCharacters;
             specialCharacters.Add(" "); // Adding mandatory space to split by
             var charArrayToSplitBy = string.Join(string.Empty, specialCharacters.Cast<string>().ToArray()).ToCharArray();
-            if (string.IsNullOrWhiteSpace(wordString)) return null;
-            var wordArray = wordString.Split(charArrayToSplitBy, StringSplitOptions.RemoveEmptyEntries);
+            if (string.IsNullOrWhiteSpace(cleanText)) return null;
+            var wordArray = cleanText.Split(charArrayToSplitBy, StringSplitOptions.RemoveEmptyEntries);
             var rankings = wordArray.GroupBy(i => i.ToLower()).Select(g =>
                 new WordReportItem {Word = g.Key, Count = g.Count()}
                 );
@@ -109,7 +106,7 @@ namespace URL_Parser.Providers
                 cleanRankings = cleanRankings.Take(maxReportSize).ToList();
 
             _logger.DebugFormat(Resources.GeneratedWordReportMessage, 
-                (cleanRankings != null && cleanRankings.Any() ? 
+                (cleanRankings.Any() ? 
                 string.Join(", ",cleanRankings.Select(i => i.Word + ":" + i.Count)) : "none"));
 
             return cleanRankings;

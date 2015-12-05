@@ -47,8 +47,9 @@ namespace URL_Parser.Utility
         {
             var cssPaths = UrlUtil.GetCssFilePaths(document);
             var images = new List<Image>();
-            if (cssPaths == null || !cssPaths.Any()) return images;
-            foreach (var path in cssPaths)
+            var cssPathArray = cssPaths as string[] ?? cssPaths.ToArray();
+            if (cssPaths == null || !cssPathArray.Any()) return images;
+            foreach (var path in cssPathArray)
             {
                 var imageReferences = GetImagesFromCssFile(path, context);
                 if (imageReferences == null || !imageReferences.Any())
