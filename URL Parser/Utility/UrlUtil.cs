@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
+using log4net;
 using URL_Parser.Models;
 using URL_Parser.Properties;
 
@@ -22,6 +23,13 @@ namespace URL_Parser.Utility
     /// </summary>
     public class UrlUtil
     {
+        #region Fields
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(MvcApplication));
+
+        #endregion
+
+
         public static bool IsUri(string text)
         {
             Uri uriResult;
@@ -65,7 +73,10 @@ namespace URL_Parser.Utility
                 url = url.Replace("../", string.Empty);
             }
             url = string.Join("/", urlParts.Take(urlParts.Count() - levelUpCount)) + "/" + url;
-            return uri.Scheme + "://" + (uri.Host.EndsWith("/") ? uri.Host : uri.Host + "/") + url;
+            var absoluteUrl =  uri.Scheme + "://" + (uri.Host.EndsWith("/") ? uri.Host : uri.Host + "/") + url;
+
+            Logger.DebugFormat(Resources.EnsuringAbsoluteUrl, url, requestUrl, absoluteUrl);
+            return absoluteUrl;
         }
 
         public static string EnsureAbsoluteUrlFormat(string url, HttpContext context)
@@ -103,8 +114,9 @@ namespace URL_Parser.Utility
                 if (content == null) return null;
                 using (var reader = new StreamReader(content))
                 {
-                    var strContent = reader.ReadToEnd();
-                    return strContent;
+                    var pageMarkup = reader.ReadToEnd();
+                    Logger.DebugFormat(Resources.ContentRetrievedMessage, url, pageMarkup);
+                    return pageMarkup;
                 }
             }
         }
@@ -115,7 +127,7 @@ namespace URL_Parser.Utility
             if (head == null) return null;
             var headNodes = head.ChildNodes;
             if (headNodes == null || !headNodes.Any()) return null;
-            var urls = headNodes
+            var images = headNodes
                 .Select(n =>
                     new Image
                     {
@@ -124,7 +136,9 @@ namespace URL_Parser.Utility
                     }
                 )
                 .Where(i => !string.IsNullOrWhiteSpace(i.Src) && IsUri(i.Src) && IsImageUrl(i.Src));
-            return urls;
+
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, ImageUtil.GetCurrentMethod());
+            return images;
         }
         
         public static IEnumerable<string> GetCssFilePaths(HtmlDocument document)
@@ -141,7 +155,10 @@ namespace URL_Parser.Utility
                 (n.GetAttributeValue("rel", null).ToLower() == "stylesheet" || 
                 (n.GetAttributeValue("type", null)!=null && n.GetAttributeValue("type", null).ToLower() == "text/css")))
                 .Select(n=>n.GetAttributeValue("href", null));
-            return nodes.Count(n=>n!=null)==0 ? null : nodes.Where(n => n != null);
+            var cssPaths = nodes.Count(n=>n!=null)==0 ? null : nodes.Where(n => n != null);
+
+            Logger.DebugFormat(Resources.ReferencePathsFoundMessage, ImageUtil.GetCurrentMethod(), cssPaths != null ? string.Join(", ", cssPaths) : "0");
+            return cssPaths;
         }
 
         public static IEnumerable<string> GetScriptFilePaths(HtmlDocument document)
@@ -155,7 +172,11 @@ namespace URL_Parser.Utility
 
             var nodes = scriptNodes
                 .Select(n => n.GetAttributeValue("src", null));
-            return nodes.Count(n => n != null) == 0 ? null : nodes.Where(n => n != null);
+            var scriptPaths = nodes.Count(n => n != null) == 0 ? null : nodes.Where(n => n != null);
+
+            Logger.DebugFormat(Resources.ReferencePathsFoundMessage, ImageUtil.GetCurrentMethod(), scriptPaths != null ? string.Join(", ", scriptPaths) : "0");
+
+            return scriptPaths;
         }
     }
 }

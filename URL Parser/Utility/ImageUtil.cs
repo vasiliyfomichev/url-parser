@@ -2,11 +2,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
+using log4net;
 using URL_Parser.Models;
 using URL_Parser.Properties;
 
@@ -16,10 +19,17 @@ namespace URL_Parser.Utility
 {
     public class ImageUtil
     {
+        #region Fields
+
+        private static readonly ILog Logger = LogManager.GetLogger(typeof(MvcApplication));
+
+        #endregion
+
+        #region Methods
 
         public static IEnumerable<Image> GetImagesFromImageTags(HtmlDocument document, string url)
         {
-            var imageUrls = document.DocumentNode.Descendants("img")
+            var images = document.DocumentNode.Descendants("img")
                     .Select(e =>
                         new Image
                         {
@@ -28,34 +38,36 @@ namespace URL_Parser.Utility
                         })
                     .Where(s => !string.IsNullOrEmpty(s.Src))
                     .ToList();
-            return imageUrls;
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, GetCurrentMethod());
+            return images;
         }
 
         public static IEnumerable<Image> GetImagesFromReferencedCss(HtmlDocument document, string url,
             HttpContext context)
         {
             var cssPaths = UrlUtil.GetCssFilePaths(document);
-            var imageUrls = new List<Image>();
-            if (cssPaths == null || !cssPaths.Any()) return imageUrls;
+            var images = new List<Image>();
+            if (cssPaths == null || !cssPaths.Any()) return images;
             foreach (var path in cssPaths)
             {
                 var imageReferences = GetImagesFromCssFile(path, context);
                 if (imageReferences == null || !imageReferences.Any())
                     continue;
-                imageUrls.AddRange(imageReferences.Select(i => new Image
+                images.AddRange(imageReferences.Select(i => new Image
                 {
                     Src = UrlUtil.EnsureAbsoluteUrl(i.Src, path),
                     Alt = i.Alt
                 }));
             }
-            return imageUrls;
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, GetCurrentMethod());
+            return images;
         }
 
         public static IEnumerable<Image> GetImagesFromInlineCss(HtmlDocument document, string url)
         {
-            var imageUrls = new List<Image>();
+            var images = new List<Image>();
             var inlineStyles = document.DocumentNode.SelectNodes("//style");
-            if (inlineStyles == null || !inlineStyles.Any()) return imageUrls;
+            if (inlineStyles == null || !inlineStyles.Any()) return images;
 
             foreach (var inlineStyle in inlineStyles)
             {
@@ -64,41 +76,42 @@ namespace URL_Parser.Utility
                 var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
                 if (imageReferences == null || !imageReferences.Any())
                     continue;
-                imageUrls.AddRange(imageReferences.Select(i => new Image
+                images.AddRange(imageReferences.Select(i => new Image
                 {
                     Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
                     Alt = i.Alt
                 }));
             }
-            return imageUrls;
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, GetCurrentMethod());
+            return images;
         }
-
 
         public static IEnumerable<Image> GetImagesFromReferencedJs(HtmlDocument document, string url, HttpContext context)
         {
-            var imageUrls = new List<Image>();
+            var images = new List<Image>();
             var scriptPaths = UrlUtil.GetScriptFilePaths(document);
-            if (scriptPaths == null || !scriptPaths.Any()) return imageUrls;
+            if (scriptPaths == null || !scriptPaths.Any()) return images;
 
             Parallel.ForEach(scriptPaths, (scriptPath) =>
             {
                 var imageReferences = GetImagesFromScriptFile(scriptPath, context);
                 if (imageReferences == null || !imageReferences.Any()) return;
-                imageUrls.AddRange(imageReferences.Select(i => new Image
+                images.AddRange(imageReferences.Select(i => new Image
                 {
                     Src = UrlUtil.EnsureAbsoluteUrl(i.Src, scriptPath),
                     Alt = i.Alt
                 }));
             });
 
-            return imageUrls;
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, GetCurrentMethod());
+            return images;
         }
 
         public static IEnumerable<Image> GetImagesFromInlineJs(HtmlDocument document, string url)
         {
-            var imageUrls = new List<Image>();
+            var images = new List<Image>();
             var inlineScripts = document.DocumentNode.SelectNodes("//script");
-            if (inlineScripts == null || !inlineScripts.Any()) return imageUrls;
+            if (inlineScripts == null || !inlineScripts.Any()) return images;
             Parallel.ForEach(inlineScripts, (inlineScript) =>
             {
                 var styleContent = inlineScript.InnerText;
@@ -106,14 +119,15 @@ namespace URL_Parser.Utility
                 var imageReferences = GetImagesFromText(styleContent, regex);
                 if (imageReferences == null || !imageReferences.Any())
                     return;
-                imageUrls.AddRange(imageReferences.Select(i => new Image
+                images.AddRange(imageReferences.Select(i => new Image
                 {
                     Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
                     Alt = i.Alt
                 }));
             });
 
-            return imageUrls;
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, GetCurrentMethod());
+            return images;
         }
 
         public static IEnumerable<Image> GetImagesFromCssFile(string filePath, HttpContext context)
@@ -129,12 +143,14 @@ namespace URL_Parser.Utility
 
             var matches = Regex.Matches(content, regex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
-            return matches.Select(m => m.Value)
+            var images =  matches.Select(m => m.Value)
                 .Select(r => new Image
                 {
                     Src = r,
                     Alt = Settings.Default.DefaultAltForImageFromCssFiles
                 });
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, GetCurrentMethod());
+            return images;
         }
 
         public static IEnumerable<Image> GetImagesFromScriptFile(string filePath, HttpContext context)
@@ -151,7 +167,7 @@ namespace URL_Parser.Utility
 
             var matches = Regex.Matches(content, regex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
-            return matches.Select(m => m.Value)
+            var images =  matches.Select(m => m.Value)
                 .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
                             || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
                             || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
@@ -164,6 +180,9 @@ namespace URL_Parser.Utility
                     Src = r,
                     Alt = Settings.Default.DefaultAltForImageFromJsFiles
                 });
+
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, GetCurrentMethod());
+            return images;
         }
 
         public static IEnumerable<Image> GetImagesFromText(string text, string imageRegex)
@@ -174,7 +193,7 @@ namespace URL_Parser.Utility
 
             var matches = Regex.Matches(text, imageRegex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
-            return matches.Select(m => m.Value)
+            var images = matches.Select(m => m.Value)
                 .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
                             || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
                             || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
@@ -185,6 +204,22 @@ namespace URL_Parser.Utility
                     Src = r,
                     Alt = Settings.Default.DefaultAltForImageFromInlineCode
                 });
+            return images;
         }
+
+        #endregion
+
+        #region Helpers
+
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        public static string GetCurrentMethod()
+        {
+            var stack = new StackTrace();
+            var frame = stack.GetFrame(1);
+
+            return frame.GetMethod().Name;
+        }
+
+        #endregion
     }
 }

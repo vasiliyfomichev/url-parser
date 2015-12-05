@@ -123,14 +123,41 @@
   <data name="ApplicationStartupMessage" xml:space="preserve">
     <value>Starting URL Parser Application.</value>
   </data>
+  <data name="ContentRetrievedMessage" xml:space="preserve">
+    <value>Content retrieved from the URL: {0}.</value>
+  </data>
+  <data name="EnsuringAbsoluteUrl" xml:space="preserve">
+    <value>Absolute URL ensured for {0} with {1} referencing URL:  {2}.</value>
+  </data>
   <data name="ErrorNotifiedEmailSubject" xml:space="preserve">
     <value>[URL Parser] Unhandled exception in application</value>
+  </data>
+  <data name="GeneratedWordReportMessage" xml:space="preserve">
+    <value>Word report ranking generated as follows: {0}.</value>
+  </data>
+  <data name="GetGeneratedImagePathsMessage" xml:space="preserve">
+    <value>{0} images found in {1} with the following URLs: {2}.</value>
+  </data>
+  <data name="ImagesReturnedDebugMessage" xml:space="preserve">
+    <value>Returned {0} images for {1}.</value>
+  </data>
+  <data name="ImagesReturnedMethodMessage" xml:space="preserve">
+    <value>{0} images returned from {1}.</value>
   </data>
   <data name="ReceivedParcingRequestMessageForImages" xml:space="preserve">
     <value>Received image parsing request for {0}.</value>
   </data>
   <data name="ReceivedParcingRequestMessageForWords" xml:space="preserve">
     <value>Received word parsing request for {0} URL with a {1} limit.</value>
+  </data>
+  <data name="ReferencePathsFoundMessage" xml:space="preserve">
+    <value>The following paths were found in {0}: {1}.</value>
+  </data>
+  <data name="TextCleanedMessage" xml:space="preserve">
+    <value>Text cleaning result: {0}</value>
+  </data>
+  <data name="TextToCleanMessage" xml:space="preserve">
+    <value>Text to clean: {0}</value>
   </data>
   <data name="UnableToGetHeaderError" xml:space="preserve">
     <value>Unable to get headers from URL.</value>
@@ -140,5 +167,11 @@
   </data>
   <data name="UnhandledExceptionError" xml:space="preserve">
     <value>Unhandled exception in Web API component of URL Parser.</value>
+  </data>
+  <data name="UrlContentRetrievedMessage" xml:space="preserve">
+    <value>Retrieved the following content for {0}: {1}.</value>
+  </data>
+  <data name="WordsReturnedDebugMessage" xml:space="preserve">
+    <value>Returned {0} word report items for {1}.</value>
   </data>
 </root>

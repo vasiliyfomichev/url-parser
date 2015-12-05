@@ -79,11 +79,65 @@ namespace URL_Parser.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Content retrieved from the URL: {0}..
+        /// </summary>
+        internal static string ContentRetrievedMessage {
+            get {
+                return ResourceManager.GetString("ContentRetrievedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Absolute URL ensured for {0} with {1} referencing URL:  {2}..
+        /// </summary>
+        internal static string EnsuringAbsoluteUrl {
+            get {
+                return ResourceManager.GetString("EnsuringAbsoluteUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to [URL Parser] Unhandled exception in application.
         /// </summary>
         internal static string ErrorNotifiedEmailSubject {
             get {
                 return ResourceManager.GetString("ErrorNotifiedEmailSubject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Word report ranking generated as follows: {0}..
+        /// </summary>
+        internal static string GeneratedWordReportMessage {
+            get {
+                return ResourceManager.GetString("GeneratedWordReportMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} images found in {1} with the following URLs: {2}..
+        /// </summary>
+        internal static string GetGeneratedImagePathsMessage {
+            get {
+                return ResourceManager.GetString("GetGeneratedImagePathsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returned {0} images for {1}..
+        /// </summary>
+        internal static string ImagesReturnedDebugMessage {
+            get {
+                return ResourceManager.GetString("ImagesReturnedDebugMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} images returned from {1}..
+        /// </summary>
+        internal static string ImagesReturnedMethodMessage {
+            get {
+                return ResourceManager.GetString("ImagesReturnedMethodMessage", resourceCulture);
             }
         }
         
@@ -102,6 +156,33 @@ namespace URL_Parser.Properties {
         internal static string ReceivedParcingRequestMessageForWords {
             get {
                 return ResourceManager.GetString("ReceivedParcingRequestMessageForWords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The following paths were found in {0}: {1}..
+        /// </summary>
+        internal static string ReferencePathsFoundMessage {
+            get {
+                return ResourceManager.GetString("ReferencePathsFoundMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text cleaning result: {0}.
+        /// </summary>
+        internal static string TextCleanedMessage {
+            get {
+                return ResourceManager.GetString("TextCleanedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Text to clean: {0}.
+        /// </summary>
+        internal static string TextToCleanMessage {
+            get {
+                return ResourceManager.GetString("TextToCleanMessage", resourceCulture);
             }
         }
         
@@ -129,6 +210,24 @@ namespace URL_Parser.Properties {
         internal static string UnhandledExceptionError {
             get {
                 return ResourceManager.GetString("UnhandledExceptionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retrieved the following content for {0}: {1}..
+        /// </summary>
+        internal static string UrlContentRetrievedMessage {
+            get {
+                return ResourceManager.GetString("UrlContentRetrievedMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returned {0} word report items for {1}..
+        /// </summary>
+        internal static string WordsReturnedDebugMessage {
+            get {
+                return ResourceManager.GetString("WordsReturnedDebugMessage", resourceCulture);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -40,8 +41,9 @@ namespace URL_Parser.Controllers
         [System.Web.Http.HttpGet, OutputCache(CacheProfile = "CacheClient1hr")]
         public IHttpActionResult Images(string url)
         {
-            _logger.Debug(string.Format(Resources.ReceivedParcingRequestMessageForImages, url));
+            _logger.DebugFormat(Resources.ReceivedParcingRequestMessageForImages, url);
             var images = _service.GetImages(url, HttpContext.Current);
+            _logger.DebugFormat(Resources.ImagesReturnedDebugMessage, images == null ? 0 : images.Count(), url);
             return Ok(images);
         }
 
@@ -54,8 +56,9 @@ namespace URL_Parser.Controllers
         [System.Web.Http.HttpGet, OutputCache(CacheProfile = "CacheClient1hr")]
         public IHttpActionResult WordReport(string url, int maxReportSize = 20)
         {
-            _logger.Debug(string.Format(Resources.ReceivedParcingRequestMessageForWords, url, maxReportSize));
+            _logger.DebugFormat(Resources.ReceivedParcingRequestMessageForWords, url, maxReportSize);
             var words = _service.GetWordReport(url, maxReportSize);
+            _logger.DebugFormat(Resources.WordsReturnedDebugMessage, words == null ? 0 : words.Count(), url);
             return Ok(words);
         }
     }

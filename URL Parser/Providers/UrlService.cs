@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.UI.WebControls;
 using HtmlAgilityPack;
+using log4net;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
 using URL_Parser.Properties;
 using URL_Parser.Utility;
+using Image = URL_Parser.Models.Image;
 
 #endregion
 
@@ -17,6 +20,21 @@ namespace URL_Parser.Providers
 {
     public class UrlService : IUrlService
     {
+        #region Fields
+
+        private static ILog _logger;
+
+        #endregion
+
+        #region Constructor
+
+        public UrlService(ILog logger)
+        {
+            _logger = logger;
+        }
+
+        #endregion
+
         #region IUrlService Members
 
         public IEnumerable<WordReportItem> GetWordReport(string url, int maxReportSize)
@@ -50,6 +68,10 @@ namespace URL_Parser.Providers
                 Task.Run(() => imageUrls.AddRange(ImageUtil.GetImagesFromInlineJs(document, url)))
             });
 
+            _logger.DebugFormat(Resources.GetGeneratedImagePathsMessage, 
+                imageUrls!=null ? imageUrls.Count.ToString():"0", 
+                url,
+                imageUrls != null && imageUrls.Any() ? string.Join(", ", imageUrls.Select(i => i.Src)) : "none");
             return imageUrls;
         }
 
@@ -68,6 +90,8 @@ namespace URL_Parser.Providers
 
 
             var wordString = HtmlUtil.CleanupString(htmlTagsWithText);
+            _logger.DebugFormat(Resources.ContentRetrievedMessage, wordString);
+            
             var specialCharacters = Settings.Default.SpecialCharacters;
             specialCharacters.Add(" "); // Adding mandatory space to split by
             var charArrayToSplitBy = string.Join(string.Empty, specialCharacters.Cast<string>().ToArray()).ToCharArray();
@@ -78,10 +102,15 @@ namespace URL_Parser.Providers
                 );
 
             rankings = rankings.OrderByDescending(w => w.Count).ThenBy(w => w.Word);
+
             var cleanRankings = rankings.Where(ranking => !Settings.Default.StopWords.Contains(ranking.Word)).ToList();
 
             if (cleanRankings.Count() > maxReportSize)
                 cleanRankings = cleanRankings.Take(maxReportSize).ToList();
+
+            _logger.DebugFormat(Resources.GeneratedWordReportMessage, 
+                (cleanRankings != null && cleanRankings.Any() ? 
+                string.Join(", ",cleanRankings.Select(i => i.Word + ":" + i.Count)) : "none"));
 
             return cleanRankings;
         }

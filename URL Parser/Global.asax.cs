@@ -26,7 +26,6 @@ namespace URL_Parser
         {
             log4net.Config.XmlConfigurator.Configure();
             Logger.Info(Resources.ApplicationStartupMessage);
-
             AutofacConfig.ConfigureContainer();
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AreaRegistration.RegisterAllAreas();
