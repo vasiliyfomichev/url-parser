@@ -96,6 +96,19 @@
             return shouldShow;
         }
 
+        $scope.startsWithHttp = function(text) {
+            if (typeof url === 'undefined' || !text)return false;
+            if (text.length === 1 && text.toLowerCase().substring(0,1) === "h") return true;
+            if (text.length === 2 && text.toLowerCase().substring(0, 2) === "ht") return true;
+            if (text.length === 3 && text.toLowerCase().substring(0, 3) === "htt") return true;
+            if (text.length === 4 && text.toLowerCase().substring(0, 4) === "http") return true;
+            if (text.length === 5 && (text.toLowerCase().substring(0, 5) === "http:" || text.toLowerCase().substring(0, 5) === "https")) return true;
+            if (text.length === 6 && (text.toLowerCase().substring(0, 6) === "http:/" || text.toLowerCase().substring(0, 6) === "https:")) return true;
+            if (text.length === 7 && (text.toLowerCase().substring(0, 7) === "http://" || text.toLowerCase().substring(0, 7) === "https:/")) return true;
+            if (text.length >= 8 && (text.toLowerCase().substring(0, 7) === "http://" || text.toLowerCase().substring(0, 8) === "https://")) return true;
+            return false;
+        };
+
         $scope.showWordReport = function () {
             var shouldShow = $scope.dataHasBeenLoaded() && $scope.chartData.datasets[0].data.length > 0;
             return shouldShow;
@@ -131,7 +144,7 @@
         $scope.parseUrl = function (url) {
             url = encodeURI(url);
             $scope.errors = [];
-            var isValidUrl = validateUrl(url);
+            var isValidUrl = $scope.isValidUrlEntered(url);
             if (!isValidUrl) return;
             $scope.isDataLoaded = false;
             $scope.loadStarted = true;
@@ -140,7 +153,25 @@
             loadWordReport(url, $scope.maxReportSize);
         }
 
-        function validateUrl(url) {
+
+        $scope.validateInputLive = function (url) {
+            if (typeof url === 'undefined' || !url) {
+                return true;
+            }
+            if (url.length < 7) {
+                return $scope.startsWithHttp(url);
+            }
+
+            if (url.length === 7 && url.toLowerCase().substring(0, 7) === "http://") {
+                return true;
+            }
+            if (url.length === 8 && url.toLowerCase().substring(0, 8) === "https://") {
+                return true;
+            }
+            return true;
+        }
+
+        $scope.isValidUrlEntered = function(url) {
             if (typeof url === 'undefined' || !url) {
                 $scope.valid = false;
                 return false;

@@ -14,8 +14,11 @@
                     <div class="error" ng-show="urlForm.input.$error.required && urlForm.input.$dirty">
                         Missing URL.
                     </div>
-                    <div class="error" ng-show="urlForm.input.$error.url && urlForm.input.$dirty">
-                        Please enter a valid URL starting with <strong>http://</strong>
+                    <div class="error" ng-show="!validateInputLive(urlForm.input.$viewValue) && urlForm.input.$dirty">
+                        Please enter a URL starting with <strong>http://</strong>
+                    </div>
+                    <div class="error" ng-show="!valid && urlForm.input.$dirty">
+                        Please enter a URL.<strong>http://</strong>
                     </div>
                     <div class="error" ng-show="working.images===false && images.length===0 && urlForm.input.$dirty  && isDataLoaded">
                         No images found.
