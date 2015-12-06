@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
 using log4net;
+using Microsoft.Ajax.Utilities;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
 using URL_Parser.Properties;
@@ -66,7 +67,7 @@ namespace URL_Parser.Providers
                 Task.Run(() => imageUrls.AddRange(ImageUtil.GetImagesFromReferencedJs(document, url, context))),
                 Task.Run(() => imageUrls.AddRange(ImageUtil.GetImagesFromInlineJs(document, url)))
             });
-
+            imageUrls = imageUrls.DistinctBy(i=>i.Src.ToLower()).ToList();
             _logger.DebugFormat(Resources.GetGeneratedImagePathsMessage, 
                 imageUrls.Count, 
                 url,

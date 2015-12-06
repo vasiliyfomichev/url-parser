@@ -34,7 +34,7 @@ section.url-input {
       font-size: 4em; }
   section.url-input .error {
     padding: 10px; }
-    section.url-input .error span {
+    section.url-input .error span, section.url-input .error div {
       color: red; }
   section.url-input input[type=url] {
     transition-property: font-size;

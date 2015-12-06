@@ -2,7 +2,6 @@
     .controller('UrlController', ["$scope", "$http",function($scope, $http) {
         $scope.valid = true;
         $scope.url = "";
-        $scope.title = null;
         $scope.images = [];
         $scope.words = [];
         $scope.loaded = {
@@ -16,9 +15,8 @@
             words: false,
         }
         $scope.maxReportSize = 10;
-
         $scope.isDataLoaded = false;
-
+        $scope.invalidUrl = true;
 
 
         // Chart options
@@ -84,7 +82,7 @@
             if (is404Found) {
                 errorMessage += "<span>Please try another URL.</span>";
             } else {
-                errorMessage += "<span>Oops... something went wrong. A team of trained monkeys has been dispatched to troubleshoot. Please try a different URL.</span>";
+                errorMessage += "<span>A team of trained monkeys has been dispatched to troubleshoot. Please try a different URL.</span>";
             }
             $scope.errorSummary = errorMessage;
         }
@@ -152,9 +150,11 @@
             var pattern = new RegExp(expression); 
             if (!pattern.test(url)) {
                 $scope.valid = false;
+                $scope.invalidUrl = false;
                 return false;
             } else {
                 $scope.valid = true;
+                $scope.invalidUrl = true;
                 return true;
             }
         };
@@ -195,8 +195,7 @@
                         $scope.chartData.labels.push(data[i].Word.toLowerCase());
                         $scope.chartData.datasets[0].data.push(data[i].Count);
                     }
-                }
-                $scope.title = data.title;
+                };
                 
                 $scope.loaded.words = true;
                 $scope.working.words = false;
@@ -217,9 +216,6 @@
         }
 
         function completeDataLoad() {
-            if ($scope.working.images && $scope.working.words) {
-                $scope.title = "";
-            }
             if ($scope.loaded.images && $scope.loaded.words) {
                 $scope.isDataLoaded = true;
                 createErrorSummary();

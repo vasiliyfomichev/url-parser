@@ -159,6 +159,9 @@
   <data name="TextToCleanMessage" xml:space="preserve">
     <value>Text to clean: {0}</value>
   </data>
+  <data name="UnableToGetContent" xml:space="preserve">
+    <value>Unable to get content for {0}. Message: {1}. Stack: {2}.</value>
+  </data>
   <data name="UnableToGetHeaderError" xml:space="preserve">
     <value>Unable to get headers from URL.</value>
   </data>

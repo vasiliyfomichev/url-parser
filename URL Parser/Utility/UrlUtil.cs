@@ -107,18 +107,29 @@ namespace URL_Parser.Utility
         {
             if (string.IsNullOrWhiteSpace(url) && !UrlExistsAsync(url).GetAwaiter().GetResult())
                 return null;
-            var webRequest = WebRequest.Create(url);
-
-            using (var response = webRequest.GetResponse())
-            using (var content = response.GetResponseStream())
+            try
             {
-                if (content == null) return null;
-                using (var reader = new StreamReader(content))
+                var webRequest = WebRequest.Create(url);
+
+                using (var response = webRequest.GetResponse())
+                using (var content = response.GetResponseStream())
                 {
-                    var pageMarkup = reader.ReadToEnd();
-                    Logger.DebugFormat(Resources.ContentRetrievedMessage, url, pageMarkup);
-                    return pageMarkup;
+                    if (content == null) return null;
+                    using (var reader = new StreamReader(content))
+                    {
+                        var pageMarkup = reader.ReadToEnd();
+                        Logger.DebugFormat(Resources.ContentRetrievedMessage, url, pageMarkup);
+                        return pageMarkup;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.DebugFormat(Resources.UnableToGetContent, 
+                    url, 
+                    ex.Message, 
+                    ex.StackTrace);
+                return null;
             }
         }
 

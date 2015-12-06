@@ -187,6 +187,15 @@ namespace URL_Parser.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to get content for {0}. Message: {1}. Stack: {2}..
+        /// </summary>
+        internal static string UnableToGetContent {
+            get {
+                return ResourceManager.GetString("UnableToGetContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to get headers from URL..
         /// </summary>
         internal static string UnableToGetHeaderError {

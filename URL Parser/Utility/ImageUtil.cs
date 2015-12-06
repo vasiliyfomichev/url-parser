@@ -47,9 +47,8 @@ namespace URL_Parser.Utility
         {
             var cssPaths = UrlUtil.GetCssFilePaths(document);
             var images = new List<Image>();
-            var cssPathArray = cssPaths as string[] ?? cssPaths.ToArray();
-            if (cssPaths == null || !cssPathArray.Any()) return images;
-            foreach (var path in cssPathArray)
+            if (cssPaths == null || !cssPaths.Any()) return images;
+            foreach (var path in cssPaths)
             {
                 var imageReferences = GetImagesFromCssFile(path, context);
                 if (imageReferences == null || !imageReferences.Any())
@@ -140,7 +139,7 @@ namespace URL_Parser.Utility
             var regex = Settings.Default.ImageRegexPatternForCss;
             const RegexOptions options = ((RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline) | RegexOptions.IgnoreCase);
             var content = UrlUtil.GetUrlContent(filePath);
-            if (String.IsNullOrWhiteSpace(content)) return null;
+            if (string.IsNullOrWhiteSpace(content)) return null;
 
             var matches = Regex.Matches(content, regex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
@@ -164,16 +163,16 @@ namespace URL_Parser.Utility
             var regex = Settings.Default.ImageRegexPatternForJs;
             const RegexOptions options = ((RegexOptions.IgnorePatternWhitespace | RegexOptions.Multiline) | RegexOptions.IgnoreCase);
             var content = UrlUtil.GetUrlContent(filePath);
-            if (String.IsNullOrWhiteSpace(content)) return null;
+            if (string.IsNullOrWhiteSpace(content)) return null;
 
             var matches = Regex.Matches(content, regex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
             var images =  matches.Select(m => m.Value)
-                .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("png", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("ico", StringComparison.OrdinalIgnoreCase))
+                .Where(v => v.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".gif", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
 
                 //TODO:account for images with querystrings
                 .Select(r => new Image
@@ -195,11 +194,11 @@ namespace URL_Parser.Utility
             var matches = Regex.Matches(text, imageRegex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
             var images = matches.Select(m => m.Value)
-                .Where(v => v.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("gif", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("jpeg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("png", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith("ico", StringComparison.OrdinalIgnoreCase))
+                .Where(v => v.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".gif", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
                 .Select(r => new Image
                 {
                     Src = r,
