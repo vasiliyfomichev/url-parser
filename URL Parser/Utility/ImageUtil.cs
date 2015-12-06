@@ -65,24 +65,21 @@ namespace URL_Parser.Utility
 
         public static IEnumerable<Image> GetImagesFromInlineCss(HtmlDocument document, string url)
         {
-            var images = new List<Image>();
-            var inlineStyles = document.DocumentNode.SelectNodes("//style");
-            if (inlineStyles == null || !inlineStyles.Any()) return images;
+            var documentRoot = document.DocumentNode;
+            var documentText = documentRoot.InnerText;
 
-            foreach (var inlineStyle in inlineStyles)
+            var images = new List<Image>();
+            var regex = Settings.Default.ImageRegexPatternForCss;
+            var imageReferences = GetImagesFromText(documentText, regex);
+            if (imageReferences == null || !imageReferences.Any())
+                return images;
+            images.AddRange(imageReferences.Select(i => new Image
             {
-                var styleContent = inlineStyle.InnerText;
-                var regex = Settings.Default.ImageRegexPatternForCss;
-                var imageReferences = ImageUtil.GetImagesFromText(styleContent, regex);
-                if (imageReferences == null || !imageReferences.Any())
-                    continue;
-                images.AddRange(imageReferences.Select(i => new Image
-                {
-                    Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
-                    Alt = i.Alt
-                }));
-            }
-            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0, GetCurrentMethod());
+                Src = UrlUtil.EnsureAbsoluteUrl(i.Src, url),
+                Alt = i.Alt
+            }));
+            Logger.DebugFormat(Resources.ImagesReturnedMethodMessage, images != null ? images.Count() : 0,
+                GetCurrentMethod());
             return images;
         }
 

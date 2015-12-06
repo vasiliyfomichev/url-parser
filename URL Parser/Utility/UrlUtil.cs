@@ -52,8 +52,8 @@ namespace URL_Parser.Utility
         /// <param name="requestUrl">The request URL.</param>
         /// <returns></returns>
         public static string EnsureAbsoluteUrl(string url, string requestUrl)
-        {
-            if ((IsAbsoluteUrl(url) && (requestUrl.ToLower().StartsWith("http") || requestUrl.ToLower().StartsWith("https"))) 
+            {
+                if ((IsAbsoluteUrl(url) && (url.ToLower().StartsWith("http") || url.ToLower().StartsWith("https"))) 
                 || string.IsNullOrWhiteSpace(url)) return url;
 
             if (string.IsNullOrWhiteSpace(requestUrl)) return url;
