@@ -66,7 +66,7 @@ namespace URL_Parser.Utility
         public static IEnumerable<Image> GetImagesFromInlineCss(HtmlDocument document, string url)
         {
             var documentRoot = document.DocumentNode;
-            var documentText = documentRoot.InnerText;
+            var documentText = documentRoot.InnerHtml;
 
             var images = new List<Image>();
             var regex = Settings.Default.ImageRegexPatternForCss;
