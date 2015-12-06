@@ -140,7 +140,12 @@ namespace URL_Parser.Utility
 
             var matches = Regex.Matches(content, regex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
-            var images =  matches.Select(m => m.Value)
+            var images = matches.Select(m => m.Value)
+                .Where(v => v.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".gif", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
+                            || v.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
                 .Select(r => new Image
                 {
                     Src = r,
