@@ -20,7 +20,7 @@ namespace URL_Parser.Configuration.Filters
             var url = actionContext.ActionArguments["url"] as string;
             if (!string.IsNullOrWhiteSpace(url) && UrlUtil.UrlExistsAsync(url).GetAwaiter().GetResult())
                 return;
-            throw new HttpRequestException(Resources.UnableToGetHeaderError);
+            throw new GenericException(Resources.UnableToGetHeaderError);
         }
     }
 }

@@ -157,6 +157,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Configuration\ErrorNotifier.cs" />
     <Compile Include="Configuration\Filters\GlobalExceptionFilterAttribute.cs" />
+    <Compile Include="Configuration\GenericException.cs" />
     <Compile Include="Configuration\Modules\LoggingModule.cs" />
     <Compile Include="Configuration\Modules\ServiceModule.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

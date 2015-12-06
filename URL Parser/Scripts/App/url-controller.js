@@ -76,7 +76,10 @@
                 } else {
                     if (!is404Found) errorMessage += "<li><span>" + errors[i].message + "</span></li>";
                 }
-                if (errors[i].code === 404 && !is404Found) is404Found = true;
+                if (errors[i].code === 404 && !is404Found) {
+                    is404Found = true;
+                    break;
+                }
             }
             errorMessage += "</ul>";
             if (is404Found) {
@@ -200,7 +203,7 @@
                 completeDataLoad();
             }).error(function (data, status, headers, config) {
                 if (status === 404) {
-                    $scope.errors.push({ code: 404, message: "Unable to parse the URL. It is likely that it does not exist." });
+                    $scope.errors.push({ code: 404, message: "Unable to parse the URL. It is likely that it does not exist or has invalid markup." });
                 } else {
                     $scope.errors.push({
                         code: 500,

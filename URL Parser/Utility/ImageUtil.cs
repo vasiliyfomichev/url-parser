@@ -196,6 +196,7 @@ namespace URL_Parser.Utility
                             || v.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)
                             || v.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
                             || v.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
+                            .Where(v=>!v.Trim().StartsWith("."))
                 .Select(r => new Image
                 {
                     Src = r,

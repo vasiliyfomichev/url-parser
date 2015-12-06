@@ -8,6 +8,7 @@ using System.Web;
 using HtmlAgilityPack;
 using log4net;
 using Microsoft.Ajax.Utilities;
+using URL_Parser.Configuration;
 using URL_Parser.Contracts;
 using URL_Parser.Models;
 using URL_Parser.Properties;
@@ -79,7 +80,7 @@ namespace URL_Parser.Providers
         {
             var document = new HtmlWeb().Load(url);
             document = HtmlUtil.CleanupDocument(document);
-
+            if (document.DocumentNode.SelectSingleNode("//body") == null) throw new GenericException();
             var htmlContentElements = document.DocumentNode.SelectSingleNode("//body")
                 .DescendantsAndSelf()
                 .ToList();

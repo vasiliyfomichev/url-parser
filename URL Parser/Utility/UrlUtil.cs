@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
 using log4net;
+using URL_Parser.Configuration;
 using URL_Parser.Models;
 using URL_Parser.Properties;
 
@@ -143,6 +144,7 @@ namespace URL_Parser.Utility
 
         public static IEnumerable<Image> GetMetaImageUrls(HtmlDocument document)
         {
+            if (document.DocumentNode.SelectSingleNode("//head") == null) throw new GenericException();
             var head = document.DocumentNode.SelectSingleNode("//head");
             if (head == null) return null;
             var headNodes = head.ChildNodes;
