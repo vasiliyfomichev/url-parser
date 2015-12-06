@@ -4,7 +4,7 @@
 }
 <section id="reports" ng-app="UrlParser">
     <div id="container" ng-controller="UrlController">
-        <div class="loader more" ng-show="(loadStarted && !showSlideshow() && errors.length===0)"></div>
+        <div class="loader more" ng-show="(loadStarted && !isDataLoaded)"></div>
         <section class="url-input" ng-class="{'set':loadStarted}">
             <form name="urlForm" autocomplete="off" ng-submit="parseUrl(url)" novalidate>
                 <div class="input-container" ng-class="{flip: valid}">
@@ -18,12 +18,12 @@
                         Please enter a URL starting with <strong>http://</strong>
                     </div>
                     <div class="error" ng-show="!valid && urlForm.input.$dirty">
-                        Please enter a URL.<strong>http://</strong>
+                        Please enter a valid URL.
                     </div>
                     <div class="error" ng-show="working.images===false && images.length===0 && urlForm.input.$dirty  && isDataLoaded">
                         No images found.
                     </div>
-                    <div class="error" ng-show="!showWordReport() && urlForm.input.$dirty && isDataLoaded">
+                    <div class="error" ng-show="!showWordReport() && urlForm.input.$dirty && isDataLoaded && errors.length===0">
                         No text found.
                     </div>
                 </div>

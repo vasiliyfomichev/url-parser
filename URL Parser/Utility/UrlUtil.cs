@@ -96,10 +96,18 @@ namespace URL_Parser.Utility
         public static async Task<bool> UrlExistsAsync(string url)
         {
             if (string.IsNullOrWhiteSpace(url)) return false;
-            var client = new HttpClient();
-            var httpRequestMsg = new HttpRequestMessage(HttpMethod.Head, url);
-            var response = await client.SendAsync(httpRequestMsg).ConfigureAwait(false);
-            return response.IsSuccessStatusCode;
+            try
+            {
+                var client = new HttpClient();
+                var httpRequestMsg = new HttpRequestMessage(HttpMethod.Head, url);
+                var response = await client.SendAsync(httpRequestMsg).ConfigureAwait(false);
+                return response.IsSuccessStatusCode;
+            }
+            catch
+            {
+                Logger.DebugFormat("Error verifying whether {0} exists or not. Defaulting to false.", url);
+                return false;
+            }
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]

@@ -80,7 +80,7 @@
             }
             errorMessage += "</ul>";
             if (is404Found) {
-                errorMessage += "<span>Please try another URL.</span>";
+                errorMessage += "<span>Please try another one.</span>";
             } else {
                 errorMessage += "<span>A team of trained monkeys has been dispatched to troubleshoot. Please try a different URL.</span>";
             }

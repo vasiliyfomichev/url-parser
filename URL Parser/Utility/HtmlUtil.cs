@@ -36,12 +36,24 @@ namespace URL_Parser.Utility
 
         public static HtmlDocument CleanupDocument(HtmlDocument document)
         {
-            foreach (var script in document.DocumentNode.Descendants("script").ToArray())
-                script.Remove();
-            foreach (var style in document.DocumentNode.Descendants("style").ToArray())
-                style.Remove();
+            var scriptNodes = document.DocumentNode.Descendants("script").ToArray();
+            if (scriptNodes != null)
+            {
+                foreach (var script in scriptNodes)
+                    script.Remove(); 
+            }
 
-            foreach (var comment in document.DocumentNode.SelectNodes("//comment()"))
+            var styleNodes = document.DocumentNode.Descendants("style").ToArray();
+            if (styleNodes != null)
+            {
+                foreach (var style in styleNodes)
+                    style.Remove();  
+            }
+
+            var comments = document.DocumentNode.SelectNodes("//comment()");
+            if (comments == null) return document;
+
+            foreach (var comment in comments)
             {
                 comment.ParentNode.RemoveChild(comment);
             }
