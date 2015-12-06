@@ -54,6 +54,23 @@ namespace URL_Parser.Utility
         /// <returns></returns>
         public static string EnsureAbsoluteUrl(string url, string requestUrl)
             {
+            var uri = new Uri(requestUrl);
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                #region Gravatar Bug Fix
+
+                if (url.StartsWith("."))
+                {
+                    url = string.Format("{0}://{1}", uri.Scheme, url.TrimStart('.'));
+                }
+
+                #endregion
+
+                if (url.StartsWith("//"))
+                {
+                    url = uri.Scheme + ":" + url;
+                }
+            }
                 if ((IsAbsoluteUrl(url) && (url.ToLower().StartsWith("http") || url.ToLower().StartsWith("https"))) 
                 || string.IsNullOrWhiteSpace(url)) return url;
 
@@ -62,7 +79,7 @@ namespace URL_Parser.Utility
                 .Replace("http://", string.Empty)
                 .Replace("https://", string.Empty);
 
-            var uri = new Uri(requestUrl);
+            
             if (!url.StartsWith("..") && url.StartsWith("/"))
                 return uri.Scheme + "://" + (uri.Host.EndsWith("/") ? uri.Host : uri.Host + "/") + url.TrimStart('/');
 
