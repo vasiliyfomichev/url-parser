@@ -6,7 +6,8 @@
     <div id="container" ng-controller="UrlController">
         <div class="loader more" ng-show="(loadStarted && !isDataLoaded)"></div>
         <section class="url-input" ng-class="{'set':loadStarted}">
-            <form name="urlForm" autocomplete="off" ng-submit="parseUrl(url)" novalidate>
+            <form name="urlForm" autocomplete="off" ng-submit="parseUrl(url)" novalidate class="custom-hidden">
+                <textarea id="secondaryUrl"></textarea>
                 <div class="input-container" ng-class="{flip: valid}">
                     <input name="input" type="url" pattern="https?://.+" id="url" placeholder="enter url and hit enter" required ng-model="url" />
                 </div>
@@ -34,8 +35,8 @@
         </section>
         <div class="reports">
             <section class="container" ng-class="{'hidden':!showSlideshow()}">
-                <h2><span>{{images.length}}</span> website images </h2>
-                <div class="slider" ng-swipe-left="prevSlide()" ng-swipe-right="nextSlide()" class="nonDraggable">
+                <h2 class="custom-hidden"><span>{{images.length}}</span> website images </h2>
+                <div class="slider custom-hidden" ng-swipe-left="prevSlide()" ng-swipe-right="nextSlide()" class="nonDraggable">
                     <img ng-repeat="image in images"
                          ng-swipe-left="prevSlide()"
                          ng-swipe-right="nextSlide()"
@@ -59,7 +60,7 @@
                 </div>
             </section>
             <section class="container chart">
-                <h2 ng-class="{'hidden':!showWordReport()}">{{maxReportSize}} most used words</h2>
+                <h2 ng-class="{'hidden':!showWordReport()}" class="custom-hidden">{{maxReportSize}} most used words</h2>
                 <canvas tc-chartjs-bar chart-data="chartData" chart-options="chartOptions" ng-class="{'hidden':!showWordReport()}"></canvas>
             </section>
         </div>

@@ -19,7 +19,6 @@
             $scope.isDataLoaded = false;
             $scope.invalidUrl = true;
 
-
             // Chart options
             $scope.chartData = {
                 labels: [],
@@ -168,10 +167,11 @@
             }
 
 
-            $scope.validateInputLive = function(url) {
+            $scope.validateInputLive = function (url) {
                 if (typeof url === 'undefined' || !url) {
                     return true;
                 }
+
                 if (url.length < 7) {
                     return $scope.startsWithHttp(url);
                 }
@@ -185,7 +185,8 @@
                 return true;
             }
 
-            $scope.isValidUrlEntered = function(url) {
+            $scope.isValidUrlEntered = function (url) {
+                if ($("#secondaryUrl").val() != "") return false;
                 if (typeof url === 'undefined' || !url) {
                     $scope.valid = false;
                     return false;

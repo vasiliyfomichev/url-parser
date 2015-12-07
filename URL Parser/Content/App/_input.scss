@@ -1,0 +1,79 @@
+﻿textarea{
+    display:none;
+}
+
+section.url-input {
+    display: block;
+    text-align: center;
+    position: absolute;
+    top: 40%;
+    margin: 0 auto;
+    transition-property: top;
+    transition-duration: 0.8s;
+    -webkit-transition-property: top; /* Safari */
+    -webkit-transition-duration: 0.8s; /* Safari */
+    width: 100%;
+    z-index: 1000;
+
+    &.set {
+        top: 3%;
+
+        input[type=url] {
+            font-size: 4em;
+        }
+    }
+
+    .error {
+        padding: 10px;
+
+        span, div {
+            color: red;
+        }
+    }
+
+    input[type=url] {
+        transition-property: font-size;
+        transition-duration: 0.8s;
+        -webkit-transition-property: font-size; /* Safari */
+        -webkit-transition-duration: 0.8s; /* Safari */
+        width: 70%;
+        background: #fff;
+        border: none;
+        border-bottom: 1px solid #000000;
+        font-size: 7em;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden !important;
+        text-overflow: ellipsis;
+    }
+    /* Smartphones (portrait and landscape) ----------- */
+    @media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+        input[type=url] {
+            transition-property: font-size;
+            transition-duration: 0.8s;
+            -webkit-transition-property: font-size; /* Safari */
+            -webkit-transition-duration: 0.8s; /* Safari */
+            width: 70%;
+            background: #fff;
+            border: none;
+            border-bottom: 1px solid #000000;
+            font-size: 3.5em !important;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+        }
+    }
+
+    button {
+        background: #fff;
+        border: none;
+        font-size: 30px;
+    }
+
+    .status {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+    }
+}
