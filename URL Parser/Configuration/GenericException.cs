@@ -5,6 +5,7 @@ using System.Web;
 
 namespace URL_Parser.Configuration
 {
+    [Serializable]
     public class GenericException : Exception
     {
         public GenericException()
