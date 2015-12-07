@@ -9,7 +9,8 @@
             <form name="urlForm" autocomplete="off" ng-submit="parseUrl(url)" novalidate class="custom-hidden">
                 <textarea id="secondaryUrl"></textarea>
                 <div class="input-container" ng-class="{flip: valid}">
-                    <input name="input" type="url" pattern="https?://.+" id="url" placeholder="enter url and hit enter" required ng-model="url" />
+                    <input name="input" type="url" pattern="https?://.+" id="url" 
+                           placeholder="type in url and hit enter" required ng-model="url" />
                 </div>
                 <div class="error">
                     <div class="error" ng-show="urlForm.input.$error.required && urlForm.input.$dirty">
