@@ -119,6 +119,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Global.asax" />
     <Content Include="Content\App\_loader.scss" />
+    <None Include="Properties\PublishProfiles\Local Test Publish.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
