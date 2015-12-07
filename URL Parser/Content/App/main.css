@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Lato:300);
 html {
   height: 101%; }
 
@@ -18,6 +19,9 @@ noscript {
   width: 100%;
   text-align: center;
   display: block; }
+
+* {
+  font-family: 'Lato', sans-serif !important; }
 
 textarea {
   display: none; }
@@ -42,9 +46,11 @@ section.url-input {
     section.url-input.set input[type=url] {
       font-size: 4em; }
   section.url-input .error {
-    padding: 10px; }
+    padding: 10px;
+    font-size: 1.2em; }
     section.url-input .error span, section.url-input .error div {
-      color: red; }
+      color: red;
+      font-size: 1.2em; }
   section.url-input input[type=url] {
     transition-property: font-size;
     transition-duration: 0.8s;
