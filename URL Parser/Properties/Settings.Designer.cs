@@ -302,5 +302,21 @@ namespace URL_Parser.Properties {
                 return ((global::System.Collections.Specialized.StringCollection)(this["SpecialCharacters"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"<?xml version=""1.0"" encoding=""utf-16""?>
+<ArrayOfString xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"">
+  <string>png</string>
+  <string>gif</string>
+  <string>jpg</string>
+  <string>ico</string>
+  <string>jpeg</string>
+</ArrayOfString>")]
+        public global::System.Collections.Specialized.StringCollection AllowedImageExtensions {
+            get {
+                return ((global::System.Collections.Specialized.StringCollection)(this["AllowedImageExtensions"]));
+            }
+        }
     }
 }

@@ -156,6 +156,7 @@
 
             $scope.parseUrl = function(url) {
                 url = encodeURI(url);
+                $("input#url").blur();
                 $scope.errors = [];
                 var isValidUrl = $scope.isValidUrlEntered(url);
                 if (!isValidUrl) return;
@@ -176,7 +177,8 @@
                     return $scope.startsWithHttp(url);
                 }
 
-                if (url.length >= 7 && (url.toLowerCase().substring(0, 7) === "http://" || url.toLowerCase().substring(0, 8) === "https://")) {
+                if (url.length >= 7 && (url.toLowerCase().substring(0, 7) === "http://" ||
+                    url.toLowerCase().substring(0, 8) === "https://")) {
                     return true;
                 }
                 return false;
@@ -245,7 +247,7 @@
                     completeDataLoad();
                 }).error(function(data, status, headers, config) {
                     if (status === 404) {
-                        $scope.errors.push({ code: 404, message: "Unable to parse the URL. It is likely that it does not exist." });
+                        $scope.errors.push({ code: 404, message: "Unable to parse the URL. It is likely that it does not exist or has invalid markup." });
                     } else {
                         $scope.errors.push({
                             code: 500,

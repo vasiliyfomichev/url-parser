@@ -20,6 +20,10 @@ section.url-input {
 
         input[type=url] {
             font-size: 4em;
+            color:#888;
+            &:focus{
+                color:#000;
+            }
         }
     }
 

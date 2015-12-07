@@ -140,13 +140,17 @@ namespace URL_Parser.Utility
 
             var matches = Regex.Matches(content, regex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
-            var images = matches.Select(m => m.Value)
-                .Where(v => v.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".gif", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
-                .Select(r => new Image
+            var imageUrls = matches.Select(m => m.Value);
+
+            var allowedExtensions = Settings.Default.AllowedImageExtensions.Cast<string>().ToList();
+            var allowedImageUrls = new List<string>();
+            foreach (var imageUrl in allowedExtensions)
+            {
+                var url = imageUrl;
+                allowedImageUrls.AddRange(imageUrls.Where(v => v.EndsWith("." + url, StringComparison.OrdinalIgnoreCase)));
+            }
+            if (!allowedExtensions.Any()) return null;
+            var images = allowedImageUrls.Select(r => new Image
                 {
                     Src = r,
                     Alt = Settings.Default.DefaultAltForImageFromCssFiles
@@ -169,15 +173,18 @@ namespace URL_Parser.Utility
 
             var matches = Regex.Matches(content, regex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
-            var images =  matches.Select(m => m.Value)
-                .Where(v => v.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".gif", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
+            var imageUrls =  matches.Select(m => m.Value);
 
-                //TODO:account for images with querystrings
-                .Select(r => new Image
+            var allowedExtensions = Settings.Default.AllowedImageExtensions.Cast<string>().ToList();
+            var allowedImageUrls = new List<string>();
+            foreach (var imageUrl in allowedExtensions)
+            {
+                var url = imageUrl;
+                allowedImageUrls.AddRange(imageUrls.Where(v => v.EndsWith("." + url, StringComparison.OrdinalIgnoreCase)));
+            }
+               
+            if (!allowedExtensions.Any()) return null;
+            var images = allowedImageUrls.Select(r => new Image
                 {
                     Src = r,
                     Alt = Settings.Default.DefaultAltForImageFromJsFiles
@@ -195,13 +202,19 @@ namespace URL_Parser.Utility
 
             var matches = Regex.Matches(text, imageRegex, options)
                 .Cast<Match>().Select(m => m.Groups["url"]);
-            var images = matches.Select(m => m.Value)
-                .Where(v => v.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".gif", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".png", StringComparison.OrdinalIgnoreCase)
-                            || v.EndsWith(".ico", StringComparison.OrdinalIgnoreCase))
-                            .Where(v=>!v.Trim().StartsWith("."))
+            var imageUrls = matches.Select(m => m.Value);
+            if (imageUrls.Any())
+                imageUrls = imageUrls.Where(v => !v.Trim().StartsWith("."));
+
+            var allowedExtensions = Settings.Default.AllowedImageExtensions.Cast<string>().ToList();
+            var allowedImageUrls = new List<string>();
+            foreach (var imageUrl in allowedExtensions)
+            {
+                var url = imageUrl;
+                allowedImageUrls.AddRange(imageUrls.Where(v => v.EndsWith("." + url, StringComparison.OrdinalIgnoreCase)));
+            }
+            if (!allowedExtensions.Any()) return null;
+            var images = allowedImageUrls
                 .Select(r => new Image
                 {
                     Src = r,

@@ -402,5 +402,15 @@
   &lt;string&gt;:&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
+    <Setting Name="AllowedImageExtensions" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;png&lt;/string&gt;
+  &lt;string&gt;gif&lt;/string&gt;
+  &lt;string&gt;jpg&lt;/string&gt;
+  &lt;string&gt;ico&lt;/string&gt;
+  &lt;string&gt;jpeg&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
