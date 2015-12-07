@@ -13,7 +13,6 @@ using URL_Parser.Contracts;
 using URL_Parser.Models;
 using URL_Parser.Properties;
 using URL_Parser.Utility;
-using Image = URL_Parser.Models.Image;
 
 #endregion
 
