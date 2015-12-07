@@ -294,7 +294,8 @@ namespace URL_Parser.Properties {
   <string>/</string>
   <string>&gt;</string>
   <string>&lt;</string>
-  <string />
+  <string>;</string>
+  <string>:</string>
 </ArrayOfString>")]
         public global::System.Collections.Specialized.StringCollection SpecialCharacters {
             get {

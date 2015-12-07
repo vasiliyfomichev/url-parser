@@ -398,7 +398,8 @@
   &lt;string&gt;/&lt;/string&gt;
   &lt;string&gt;&amp;gt;&lt;/string&gt;
   &lt;string&gt;&amp;lt;&lt;/string&gt;
-  &lt;string /&gt;
+  &lt;string&gt;;&lt;/string&gt;
+  &lt;string&gt;:&lt;/string&gt;
 &lt;/ArrayOfString&gt;</Value>
     </Setting>
   </Settings>
