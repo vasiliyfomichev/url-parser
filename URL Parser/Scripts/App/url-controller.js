@@ -152,7 +152,7 @@
                 $scope.currentIndex = ($scope.currentIndex > 0) ? --$scope.currentIndex : $scope.images.length - 1;
             };
 
-//#endregion    
+            //#endregion    
 
             $scope.parseUrl = function(url) {
                 url = encodeURI(url);
@@ -176,13 +176,10 @@
                     return $scope.startsWithHttp(url);
                 }
 
-                if (url.length === 7 && url.toLowerCase().substring(0, 7) === "http://") {
+                if (url.length >= 7 && (url.toLowerCase().substring(0, 7) === "http://" || url.toLowerCase().substring(0, 8) === "https://")) {
                     return true;
                 }
-                if (url.length === 8 && url.toLowerCase().substring(0, 8) === "https://") {
-                    return true;
-                }
-                return true;
+                return false;
             }
 
             $scope.isValidUrlEntered = function (url) {
