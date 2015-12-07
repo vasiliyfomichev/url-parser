@@ -78,6 +78,9 @@ section.url-input {
     width: 100%;
     text-align: center; }
 
+.nonDraggable {
+  -webkit-user-drag: none; }
+
 .slider {
   height: 400px;
   overflow: hidden;
